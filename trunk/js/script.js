@@ -7,9 +7,9 @@ $(document).ready(function() {
     // http://wenzhixin.net.cn/p/bootstrap-table/docs/index.html
     $('.dataTable').bootstrapTable({
         /*method: 'get',
-        url: 'data2.json',
-        cache: false,
-        height: 400,*/
+         url: 'data2.json',
+         cache: false,
+         height: 400,*/
         striped: true,
         pagination: true,
         pageSize: 10,
@@ -18,13 +18,27 @@ $(document).ready(function() {
         showColumns: true,
         showRefresh: true,
         minimumCountColumns: 2,
-        clickToSelect: true,    
+        clickToSelect: true,
         // extension export 
         /*showExport : true, 
-        exportTypes : ['json', 'xml', 'csv', 'txt', 'sql', 'excel'],
-        showFilter : true,
-        flat : true,*/
+         exportTypes : ['json', 'xml', 'csv', 'txt', 'sql', 'excel'],
+         showFilter : true,
+         flat : true,*/
     });
+    // ########### datepicker ##########
+    var today = new Date();
+    var current = today.toLocaleFormat('DD/MM/YYYY');
+    // set current date
+    var datepicker = $('#datetext').datepicker("setDate", current);
+    datepicker.datepicker({
+        autoclose: true,
+        format: "dd/mm/yyyy",
+    });
+    datepicker.off('focus');
+    $('#datebtn').click(function() {
+        datepicker.datepicker('show');
+    });
+    // ########### datepicker ##########
 });
 function notify(type, msg, delay) {
     /* var messages = [
@@ -113,6 +127,13 @@ function reloadDelay(timer) {
 }
 function goUrl(url) {
     window.location.href = url; //will redirect to your blog page (an ex: blog.html)
+}
+function print_properties_in_object(object) {
+    var output = '';
+    for (var property in object) {
+        output += property + ': ' + object[property] + '; ';
+    }
+    return output;
 }
 function login() {
     var username = $('#input-username').val();

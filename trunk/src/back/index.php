@@ -27,6 +27,10 @@
         <script type="text/javascript" src="../../lib/bootstrap-table-master/docs/dist/extensions/export/bootstrap-table-export.min.js"></script>
         <!-- dataatble -->
         
+        <!-- datepicker-->
+        <link rel="stylesheet" type="text/css" href="../../lib/bootstrap-datepicker/css/datepicker.css"/>
+        <script type="text/javascript" src="../../lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <!-- datepicker-->
         
          <link rel="stylesheet" type="text/css" href="../../css/style.css">
          <script language="JavaScript" src="../../js/script.js" type="text/javascript"></script>
