@@ -43,6 +43,18 @@ switch ($_GET['method']) {
             }
         }
         break;
+    case 'get_model_by_bra_id':
+        $data = [];
+        if (!empty($_POST['bra_id'])) {
+            $bra_id = $_POST['bra_id'];
+            $sql = "SELECT * FROM model WHERE bra_id = $bra_id";
+            $query = mysql_query($sql) or die(mysql_error());
+            while ($row = mysql_fetch_array($query)) :
+                $data[] = $row;
+            endwhile;            
+        }
+        echo json_encode($data);
+        break;
     case 'delete':
         $id = $_POST['id'];
         $query = mysql_query("DELETE FROM model WHERE mod_id = $id") or die(mysql_error());

@@ -36,11 +36,20 @@ if (!empty($_GET['id'])) {
                     </div>
                     <label  class="col-sm-3 control-label"></label>
                     <label for="input-nameth" class="col-sm-2 control-label">วันที่ซ่อม</label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2 input-append date">
                         <input type="hidden" name="input-id" value="<?= $id ?>"/>
-                        <input type="text" class="form-control validate[required]" 
-                               data-errormessage-value-missing="กรุณากรอก วันที่ซ่อม"
-                               name="input-nameth" id="input-nameth" value="<?= $nameth ?>"/>
+                        <!--<input type="text" class="form-control validate[required]" 
+                               data-errormessage-value-missing="กรุณากรอก วันที่ซ่อม"       
+                               data-provide="datepicker" data-date-format="dd/mm/yyyy"
+                               name="input-nameth" id="input-nameth" value="<?= $nameth ?>" readonly/>-->
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="datetext" readonly/>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="datebtn">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </button>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -57,7 +66,7 @@ if (!empty($_GET['id'])) {
                                name="input-nameth" id="input-nameth" value="<?= $nameth ?>"/>
                     </div>
                     <label for="input-nameth" class="col-sm-1 control-label">เลขบัตร</label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <input type="text" class="form-control validate[required]" 
                                data-errormessage-value-missing="กรุณากรอก เลขบัตร ประชาชน"
                                name="input-nameth" id="input-nameth" value="<?= $nameth ?>"/>
@@ -65,7 +74,7 @@ if (!empty($_GET['id'])) {
                 </div>
                 <div class="form-group">
                     <label for="input-nameeng" class="col-sm-1 control-label">ที่อยู่</label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                         <textarea class="form-control validate[required]"
                                   data-errormessage-value-missing="กรุณากรอก รายละเอียด"
                                   name="input-desc" id="input-desc"></textarea>                
@@ -94,18 +103,7 @@ if (!empty($_GET['id'])) {
                     <div class="col-sm-2">
                         <select class="form-control validate[required]" name="combo-model" id="combo-model"
                                 data-errormessage-value-missing="กรุณาเลือก รุ่น">
-                            <option value="" selected>-- เลือก --</option>
-                            <?php
-                            $sql_model = "SELECT * FROM model";
-                            $query_model = mysql_query($sql_model) or die(mysql_error());
-                            ?>
-                            <?php while ($data = mysql_fetch_array($query_model)): ?>
-                                <?php if ($model == $data['mod_id']): ?>
-                                    <option value="<?= $data['mod_id'] ?>" selected><?= $data['mod_nameth'] ?>( <?= $data['mod_nameeng'] ?> )</option>
-                                <?php else: ?>
-                                    <option value="<?= $data['mod_id'] ?>"><?= $data['mod_nameth'] ?>( <?= $data['mod_nameeng'] ?> )</option>
-                                <?php endif; ?>
-                            <?php endwhile; ?>
+                            <option value="" selected>-- เลือก --</option>                            
                         </select>          
                     </div>
                     <label for="input-nameeng" class="col-sm-1 control-label">เลขเครื่อง</label>
@@ -149,6 +147,16 @@ if (!empty($_GET['id'])) {
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
+        // ########## combo brand , combo model ##########
+        $('#combo-brand').on('change', function(event) {
+            $.post('../action/model.php?method=get_model_by_bra_id', {bra_id: this.value}, function(data) {
+                $('#combo-model').empty();
+                $.each(data, function(index, value) {
+                    $('#combo-model').append('<option value="' + value.mod_id + '">' + value.mod_nameth + '</option>');
+                });
+            }, 'json');
+        });
+        // ########## combo brand , combo model ##########
         var valid = $('#frm-in_repair').validationEngine('attach', {
             promptPosition: "centerRight",
             scroll: false,
