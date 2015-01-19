@@ -18,7 +18,7 @@ $(document).ready(function() {
         showColumns: true,
         showRefresh: true,
         minimumCountColumns: 2,
-        clickToSelect: true,
+        //.clickToSelect: true,
         // extension export 
         /*showExport : true, 
          exportTypes : ['json', 'xml', 'csv', 'txt', 'sql', 'excel'],
@@ -26,17 +26,26 @@ $(document).ready(function() {
          flat : true,*/
     });
     // ########### datepicker ##########
+    $.fn.datepicker.defaults.format = "dd/mm/yyyy";
     var today = new Date();
     var current = today.toLocaleFormat('DD/MM/YYYY');
     // set current date
-    var datepicker = $('#datetext').datepicker("setDate", current);
-    datepicker.datepicker({
-        autoclose: true,
-        format: "dd/mm/yyyy",
+    var datepicke_1 = $('#datetext_1').datepicker("setDate", current);
+    datepicke_1.on('changeDate', function(ev) {
+        $(this).datepicker('hide');
     });
-    datepicker.off('focus');
-    $('#datebtn').click(function() {
-        datepicker.datepicker('show');
+    datepicke_1.off('focus');
+    $('#datebtn_1').click(function() {
+        datepicke_1.datepicker('show');
+    });
+
+    var datepicker_2 = $('#datetext_2').datepicker("setDate", current);
+    datepicker_2.on('changeDate', function(ev) {
+        $(this).datepicker('hide');
+    });
+    datepicker_2.off('focus');
+    $('#datebtn_2').click(function() {
+        datepicker_2.datepicker('show');
     });
     // ########### datepicker ##########
 });
