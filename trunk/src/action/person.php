@@ -4,10 +4,10 @@ session_start();
 include '../config/extension.php';
 include '../config/connection.php';
 
-if (!empty($_SESSION['person'])){
+if (!empty($_SESSION['person'])) {
     $person = $_SESSION['person'];
 }
-
+$url = '';
 switch ($_GET['method']) {
     case 'login':
         $username = $_POST['username'];

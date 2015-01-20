@@ -45,14 +45,16 @@ switch ($_GET['method']) {
         break;
     case 'get_model_by_bra_id':
         $data = [];
-        if (!empty($_POST['bra_id'])) {
-            $bra_id = $_POST['bra_id'];
-            $sql = "SELECT * FROM model WHERE bra_id = $bra_id";
-            $query = mysql_query($sql) or die(mysql_error());
-            while ($row = mysql_fetch_array($query)) :
-                $data[] = $row;
-            endwhile;            
-        }
+        $bra_id = $_POST['bra_id'];
+        $sql = "SELECT * FROM model ";
+        if (!empty($_POST['bra_id'])):
+            $sql .= " WHERE bra_id = $bra_id";
+        endif;
+        //echo 'sql :==' . $sql;
+        $query = mysql_query($sql) or die(mysql_error());
+        while ($row = mysql_fetch_array($query)) :
+            $data[] = $row;
+        endwhile;
         echo json_encode($data);
         break;
     case 'delete':

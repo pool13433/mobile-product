@@ -11,6 +11,7 @@ $idcard = '';
 $address = '';
 $brand = '';
 $model = '';
+$mobile = '';
 $repair_emi = '';
 $color = '';
 
@@ -26,12 +27,33 @@ $per_id = '';
 
 $repair_status = '0';
 if (!empty($_GET['id'])) {
-    $sql = "SELECT * FROM in_repair WHERE inrep_id = " . $_GET['id'];
+    $sql = "SELECT * FROM in_repair ir";
+    $sql .= " LEFT JOIN person p ON p.per_idcard = ir.per_idcard";
+    $sql .= " WHERE inrep_id = " . $_GET['id'];
     $query = mysql_query($sql) or die(mysql_error());
     $data = mysql_fetch_assoc($query);
-    $id = $data['inrep_id'];
-    $nameth = $data['inrep_code'];
-    $nameeng = $data['inrep_createdate'];
+    $repair_id = $data['inrep_id'];
+    $repair_code = $data['inrep_code'];
+    $repair_createdate = $data['inrep_createdate'];
+    $fname = $data['per_fname'];
+    $lname = $data['per_lname'];
+    $idcard = $data['per_idcard'];
+    $mobile = $data['per_mobile'];
+    $address = $data['per_address'];
+    $brand = $data['bra_id'];
+    $model = $data['mod_id'];
+    $repair_emi = $data['inrep_emi'];
+    $color = $data['col_id'];
+
+    $accessory = '';
+    $accessory_other = $data['inrep_accessory_other'];
+
+    $proble = '';
+    $proble_other = $data['inrep_problem_other'];
+
+    $repair_remark = $data['inrep_remark'];
+    $repair_getdate = $data['inrep_getdate'];
+    $per_id = '';
 }
 //############ session ###########
 $person = '';
@@ -111,10 +133,16 @@ endif;
                 </div>
                 <div class="form-group">
                     <label for="input-address" class="col-sm-1 control-label">ที่อยู่</label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-6">
                         <textarea class="form-control validate[required]"
                                   data-errormessage-value-missing="กรุณากรอก รายละเอียด"
                                   name="input-address" id="input-address"><?= $address ?></textarea>                
+                    </div>
+                    <label for="input-mobile" class="col-sm-2 control-label">โทรศัพท์</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control validate[required]" 
+                               data-errormessage-value-missing="กรุณากรอก โทรศัพท์"
+                               name="input-mobile" id="input-mobile" value="<?= $mobile ?>"/>
                     </div>
                 </div>    
                 <div class="form-group">
@@ -140,7 +168,18 @@ endif;
                     <div class="col-sm-2">
                         <select class="form-control validate[required]" name="combo-model" id="combo-model"
                                 data-errormessage-value-missing="กรุณาเลือก รุ่น">
-                            <option value="" selected>-- เลือก --</option>                            
+                            <option value="" selected>-- เลือก --</option>        
+                            <?php
+                            $sql_model = "SELECT * FROM model";
+                            $query_model = mysql_query($sql_model) or die(mysql_error());
+                            ?>
+                            <?php while ($data = mysql_fetch_array($query_model)): ?>
+                                <?php if ($model == $data['mod_id']): ?>
+                                    <option value="<?= $data['mod_id'] ?>" selected><?= $data['mod_nameth'] ?>( <?= $data['mod_nameeng'] ?> )</option>
+                                <?php else: ?>
+                                    <option value="<?= $data['mod_id'] ?>"><?= $data['mod_nameth'] ?>( <?= $data['mod_nameeng'] ?> )</option>
+                                <?php endif; ?>
+                            <?php endwhile; ?>
                         </select>          
                     </div>
                     <label for="input-emi" class="col-sm-1 control-label">เลขเครื่อง</label>
@@ -168,7 +207,7 @@ endif;
                         </select>           
                     </div>
                 </div>  
-                <div class="form-group">
+                <div class="form-group" id="box_accessory">
                     <label for="input-accessory" class="col-sm-2 control-label">อุปกรณ์เสริม</label>
                     <div class="col-sm-10">
                         <div class="checkbox">
@@ -184,14 +223,14 @@ endif;
                             <?php endwhile; ?>
                             <label>
                                 <input type="checkbox" value="0" name="checkbox-accessory[]">
-                                อื่น ๆ ระบุ            
-                                <input type="text" name="input-accessory_other"/>
+                                อื่น ๆ ระบุ                                            
                             </label>
+                            <input type="text" name="input-accessory_other" value="<?=$accessory_other?>"/>
                         </div>
 
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="box_problem">
                     <label for="input-nameeng" class="col-sm-2 control-label">อาการ/สาเหตุ</label>
                     <div class="col-sm-10">
                         <div class="checkbox">
@@ -207,9 +246,9 @@ endif;
                             <?php endwhile; ?>
                             <label>
                                 <input type="checkbox" value="0" name="checkbox-problem[]">
-                                อื่น ๆ ระบุ            
-                                <input type="text" name="input-problem_other"/>
+                                อื่น ๆ ระบุ                                            
                             </label>
+                            <input type="text" name="input-problem_other" value="<?=$proble_other?>"/>
                         </div>
                     </div>
                 </div>
@@ -225,7 +264,7 @@ endif;
                     <label for="input-getdate" class="col-sm-2 control-label">วันที่มารับเครื่อง</label>
                     <div class="col-sm-2 input-append date">
                         <div class="input-group">
-                            <input type="text" class="form-control validate[required]" value="<?=  change_dateYMD_TO_DMY($repair_getdate)?>"
+                            <input type="text" class="form-control validate[required]" value="<?= change_dateYMD_TO_DMY($repair_getdate) ?>"
                                    data-errormessage-value-missing="กรุณาเลือก วันที่มารับเครื่อง"
                                    name="input-getdate" id="datetext_2" readonly/>
                             <span class="input-group-btn">
@@ -269,6 +308,48 @@ endif;
             }, 'json');
         });
         // ########## combo brand , combo model ##########
+        var repair_id = $(':input[name=input-id]').val();
+        console.log('repair_id :==' + repair_id);
+        //########### checkbox accessory #################
+        var length_accessory = $('#box_accessory').find(':checkbox').length;
+        //console.log('length_accessory :==' + length_accessory);
+        $('#box_accessory').find(':checkbox').each(function(index, object) {
+            //console.log('index :==' + index);
+            //console.log('object :==' + $(object).val());
+            var accessory_id = $(object).val();
+            $.post('../action/in_repair.php?method=get_accessory_is_check',
+                    {
+                        repair_id: repair_id,
+                        accessory_id: accessory_id
+                    }, function(data) {
+                        console.log('data.status :=='+data.status);
+                if (data.status) {
+                    $(object).prop('checked', true);
+                }
+            }, 'json');
+        });
+        //########### checkbox accessory #################
+        
+        //########### checkbox problem #################
+        var length_accessory = $('#box_accessory').find(':checkbox').length;
+        //console.log('length_accessory :==' + length_accessory);
+        $('#box_problem').find(':checkbox').each(function(index, object) {
+            //console.log('index :==' + index);
+            //console.log('object :==' + $(object).val());
+            var accessory_id = $(object).val();
+            $.post('../action/in_repair.php?method=get_problem_is_check',
+                    {
+                        repair_id: repair_id,
+                        problem_id: accessory_id
+                    }, function(data) {
+                        console.log('data.status :=='+data.status);
+                if (data.status) {
+                    $(object).prop('checked', true);
+                }
+            }, 'json');
+        });
+        //########### checkbox problem #################
+        
         var valid = $('#frm-in_repair').validationEngine('attach', {
             promptPosition: "centerLeft:50",
             scroll: false,
