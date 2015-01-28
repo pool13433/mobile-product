@@ -126,7 +126,7 @@ endif;
                     </div>
                     <label for="input-idcard" class="col-sm-1 control-label">เลขบัตร</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control validate[required]" 
+                        <input type="text" class="form-control validate[required]"  onchange="check_idcard(this)"
                                data-errormessage-value-missing="กรุณากรอก เลขบัตร ประชาชน"
                                name="input-idcard" id="input-idcard" value="<?= $idcard ?>"/>
                     </div>

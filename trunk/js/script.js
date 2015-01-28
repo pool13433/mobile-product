@@ -26,9 +26,9 @@ $(document).ready(function() {
          flat : true,*/
     });
     // ########### datepicker ##########
-    $.fn.datepicker.defaults.format = "dd/mm/yyyy";
+    $.fn.datepicker.defaults.format = "dd-mm-yyyy";
     var today = new Date();
-    var current = today.toLocaleFormat('DD/MM/YYYY');
+    var current = today.toLocaleFormat('DD-MM-YYYY');
     // set current date
     var datepicke_1 = $('#datetext_1').datepicker("setDate", current);
     datepicke_1.on('changeDate', function(ev) {
@@ -49,6 +49,29 @@ $(document).ready(function() {
     });
     // ########### datepicker ##########
 });
+function date_picker_custom(modal_id) {
+    $.fn.datepicker.defaults.format = "dd-mm-yyyy";
+    var today = new Date();
+    var current = today.toLocaleFormat('DD-MM-YYYY');
+    // set current date
+    var datepicke_1 = $('#datetext_1' + modal_id).datepicker("setDate", current);
+    datepicke_1.on('changeDate', function(ev) {
+        $(this).datepicker('hide');
+    });
+    datepicke_1.off('focus');
+    $('#datebtn_1' + modal_id).click(function() {
+        datepicke_1.datepicker('show');
+    });
+
+    var datepicker_2 = $('#datetext_2' + modal_id).datepicker("setDate", current);
+    datepicker_2.on('changeDate', function(ev) {
+        $(this).datepicker('hide');
+    });
+    datepicker_2.off('focus');
+    $('#datebtn_2' + modal_id).click(function() {
+        datepicker_2.datepicker('show');
+    });
+}
 function notify(type, msg, delay) {
     /* var messages = [
      ['bottom-right', 'info', 'Gah this is awesome.'],
@@ -245,6 +268,18 @@ function delete_data(id, url) {
         return true;
     }
     return false;
+}
+function check_idcard(element) {
+    $.post('../action/person.php?method=check_idcard',
+            {idcard: element.value},
+    function(data) {
+        if (data.status == 'success') {
+            showNotification('success', data.title, data.msg, 3);
+        } else {
+            showNotification('danger', data.title, data.msg, 3);
+            element.value = '';
+        }
+    }, 'json');
 }
 
 

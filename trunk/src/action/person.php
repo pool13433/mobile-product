@@ -1,11 +1,14 @@
 <?php
 
-session_start();
+@session_start();
 include '../config/extension.php';
 include '../config/connection.php';
 
+$person = '';
+$ses_id = '';
 if (!empty($_SESSION['person'])) {
     $person = $_SESSION['person'];
+    $ses_id = $person['per_id'];
 }
 $url = '';
 switch ($_GET['method']) {
@@ -26,12 +29,9 @@ switch ($_GET['method']) {
                 case 0: // GENERAL USER
                     $url = 'front/index.php';
                     break;
-                case 1: // ADMIN
-                    $url = 'back/index.php';
-                    break;
-                case 2: // MEMBER
-                    break;
+
                 default:
+                    $url = 'back/index.php';
                     break;
             }
             echo returnJson('success', 'information', 'เข้าระบบ สำเร็จ', $url);
@@ -83,34 +83,55 @@ switch ($_GET['method']) {
         break;
     case 'create':
         if (!empty($_POST)) {
-            $per_id = $person['per_id'];
             $id = $_POST['input-id'];
-            $nameth = $_POST['input-nameth'];
-            $nameeng = $_POST['input-nameeng'];
-            if (empty($_POST['input-id'])) { // UPDATE 
-                $sql = " INSERT INTO `color`(";
-                $sql .= " `col_nameth`, `col_nameeng`, `col_createdate`, ";
-                $sql .= " `col_createby`, `col_updatedate`, `col_updateby`)";
-                $sql .= " VALUES (";
-                $sql .= " '$nameth','$nameeng',NOW(),";
-                $sql .= " $per_id,NOW(),$per_id";
+            $fname = $_POST['input-fname'];
+            $lname = $_POST['input-lname'];
+            $username = $_POST['input-username'];
+            $password = $_POST['input-password'];
+            $password_confirm = $_POST['input-password_re'];
+            $idcard = $_POST['input-idcard'];
+            $address = $_POST['input-address'];
+            $mobile = $_POST['input-mobile'];
+            $email = $_POST['input-email'];
+            $status = $_POST['combo-status'];
+            if (empty($_POST['input-id'])) { // NEW 
+                $sql = " INSERT INTO `person`(";
+                $sql .= " `per_fname`, `per_lname`,";
+                $sql .= " `per_username`, `per_password`,";
+                $sql .= " `per_idcard`, `per_address`,";
+                $sql .= " `per_mobile`, `per_email`, ";
+                $sql .= " `per_createdate`, `per_createby`, ";
+                $sql .= " `per_updatedate`, `per_updateby`,";
+                $sql .=" `per_status`) VALUES (";
+                $sql .= " '$fname','$lname',";
+                $sql .= " '$username','$password',";
+                $sql .= " '$idcard','$address',";
+                $sql .= " '$mobile','$email',";
+                $sql .= " NOW(),$ses_id,NOW(),$ses_id,";
+                $sql .=" $status";
                 $sql .= " )";
+
                 $title = 'information';
-                $msg = 'เพิ่ม สี ใหม่ สำเร็จ';
-            } else { // NEW                               
-                $sql = " UPDATE `color` SET ";
-                $sql .= " `col_nameth`='$nameth',";
-                $sql .= " `col_nameeng`='$nameeng',";
-                $sql .= " `col_updatedate`=NOW(),";
-                $sql .= " `col_updateby`=$per_id";
-                $sql .= " WHERE col_id = $id";
+                $msg = 'เพิ่ม ผู้ใช้งาน ใหม่ สำเร็จ';
+            } else { // UPDATE                               
+                $sql = " UPDATE `person` SET";
+                $sql .= " `per_fname`='$fname',";
+                $sql .= " `per_lname`='$lname',`per_username`='$username',";
+                $sql .= " `per_password`='$password',`per_idcard`='$idcard',";
+                $sql .= " `per_address`='$address',`per_mobile`='$mobile',";
+                $sql .= " `per_email`='$email',";
+                $sql .= " `per_updatedate`=NOW(),`per_updateby`=$ses_id,";
+                $sql .= " `per_status`=$status";
+                $sql .= " WHERE `per_id`=$id";
+
                 $title = 'information';
-                $msg = 'แก้ไข สี สำเร็จ';
+                $msg = 'แก้ไข ผู้ใช้งาน สำเร็จ';
             }
             $query = mysql_query($sql) or die(mysql_error() . 'sql :' . $sql);
             if ($query) {
-                echo returnJson('success', $title, $msg, 'index.php?page=list-color');
+                echo returnJson('success', $title, $msg, 'index.php?page=list-person');
             } else {
+                exit("การประมวลผลเกิดข้อผิดพลาด");
                 echo returnJson('danger', $title, $msg, '');
             }
         }
@@ -121,6 +142,23 @@ switch ($_GET['method']) {
         if ($query) {
             echo returnJson('success', 'information', 'ลบสำเร็จ', '');
         }
+        break;
+    case 'check_idcard':
+        $idcard = $_POST['idcard'];
+        if (strlen($idcard) >= 13): //จำนวนความยาวต้อง 13 ตัวอักษร
+            $sql = "SELECT * FROM person WHERE per_idcard = '$idcard'";
+            $query = mysql_query($sql) or die(mysql_error());
+            $row = mysql_num_rows($query);
+            if ($row == 0):
+                // ยังไม่พบ personal id
+                echo returnJson('success', 'ตรวจสอบ รหัสบัตรจากระบบ', 'ยังไม่พบ รหัสบัตรประชาชน ผ่าน', '');
+            else:
+                // ยังไม่พบ personal id
+                echo returnJson('danger', 'ตรวจสอบ รหัสบัตรจากระบบ', 'กรอกรหัสบัตรไม่ถูกต้อง รหัสบัตรนี้มีในระบบแล้ว', '');
+            endif;
+        else:
+            echo returnJson('danger', 'ตรวจสอบ รหัสบัตรจากระบบ', 'กรอกรหัสบัตรไม่ครบ', '');
+        endif;
         break;
     default:
         break;

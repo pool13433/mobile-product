@@ -83,12 +83,12 @@ switch ($_GET['method']) {
             $sql = " INSERT INTO `in_repair`(";
             $sql .= "  `inrep_code`,`per_idcard`, `inrep_createdate`,";
             $sql .= " `inrep_getdate`, `inrep_remark`,`inrep_accessory_other`,`inrep_problem_other`,";
-            $sql .= " `bra_id`, `mod_id`, `inrep_emi`, `col_id`,";
+            $sql .= " `bra_id`, `mod_id`, `inrep_emi`, `col_id`,";            
             $sql .= " `inrep_createby`, `inrep_updatedate`, ";
             $sql .= " `inrep_updateby`, `inrep_status`) VALUES (";
-            $sql .= " '$repair_code','$idcard','" . change_dateDMY_TO_YMD($repair_createdate) . "',";
-            $sql .= " '" . change_dateDMY_TO_YMD($repair_getdate) . "','$repair_remark','$accessory_other','$proble_other',";
-            $sql .= " $brand,$model,'$repair_emi',$color,";
+            $sql .= " '$repair_code','$idcard',STR_TO_DATE('$repair_createdate','%d-%m-%Y'),";
+            $sql .= " STR_TO_DATE('$repair_getdate','%d-%m-%Y'),'$repair_remark','$accessory_other','$proble_other',";
+            $sql .= " $brand,$model,'$repair_emi',$color,";            
             $sql .= " $ses_id,NOW(),$ses_id,$repair_status";
             $sql .= " )";
             $message = 'เพิ่มใบซ่อมเข้าระบบสำเร็จ';
@@ -96,8 +96,8 @@ switch ($_GET['method']) {
             $sql = " UPDATE `in_repair` SET";
             $sql .= " `inrep_code`='$repair_code',";
             $sql .= " `per_idcard` = '$idcard',";
-            $sql .= " `inrep_createdate`='" . change_dateDMY_TO_YMD($repair_createdate) . "',";
-            $sql .= " `inrep_getdate`='" . change_dateDMY_TO_YMD($repair_getdate) . "',";
+            $sql .= " `inrep_createdate`=STR_TO_DATE('$repair_createdate','%d-%m-%Y'),";
+            $sql .= " `inrep_getdate`=STR_TO_DATE('$repair_getdate','%d-%m-%Y'),";
             $sql .= " `inrep_remark`='$repair_remark',";
             $sql .= " `inrep_accessory_other` = '$accessory_other',";
             $sql .= " `inrep_problem_other` = '$proble_other',";

@@ -4,7 +4,7 @@ $id = "";
 $name = "";
 $desc = "";
 $color = "";
-$color = "";
+$model = "";
 if (!empty($_GET['id'])) {
     $sql = "SELECT * FROM product WHERE prod_id = " . $_GET['id'];
     $query = mysql_query($sql) or die(mysql_error());
@@ -13,7 +13,7 @@ if (!empty($_GET['id'])) {
     $name = $data['prod_name'];
     $desc = $data['prod_desc'];
     $color = $data['col_id'];
-    $color = $data['col_id'];
+    $model = $data['mod_id'];
 }
 ?>
 <div class="panel panel-primary">
