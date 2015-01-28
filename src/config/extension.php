@@ -3,6 +3,11 @@
 date_default_timezone_set('UTC');
 define("MAINPAGE", "login.php");
 
+// ########### ประกาศค่าคงที่ ##########
+define('ONWER_STATUS', 3);
+define('EMPLOYEE_STATUS', 2);
+// ########### ประกาศค่าคงที่ ##########
+
 function returnJson($status, $title, $msg, $url) {
     return json_encode(array(
         'status' => $status,
@@ -26,9 +31,74 @@ function repair_status() {
         '3' => 'เกิดปัญหา'
     );
 }
+
 function change_dateDMY_TO_YMD($beforDate) {
     $array = explode("/", $beforDate);
     return $array[2] . "-" . $array[1] . "-" . $array[0];
+}
+
+function change_dateYMD_TO_DMY($beforDate) {
+    if (!empty($beforDate)) {
+        $array = explode("-", $beforDate);
+        return $array[2] . "/" . $array[1] . "/" . $array[0];
+    } else {
+        return date('d-m-Y');
+    }
+}
+
+function listPersonStatus() {
+    return array(
+        '1' => 'พนักงานร้าน',
+        '2' => 'พนักงานซ่อม',
+        '3' => 'เจ้าของร้าน',
+        '4' => 'ลูกค้า',
+    );
+}
+
+function listRepairStatus() {
+    return array(
+        1 => 'รอประเมิน',
+        2 => 'ประเมินเสร็จสิ้น รอซ่อม',
+        3 => 'ซ่อม',
+        4 => 'ซ่อมเสร็จแล้ว',
+        5 => 'เกิดปัญหา'
+    );
+}
+
+function listRepairStatusColor() {
+    return array(
+        1 => 'warning',
+        2 => 'primary',
+        3 => 'success',
+        4 => 'danger',
+        5 => 'info',
+    );
+}
+
+function getDataList($params, $list) {
+    $array = $list;
+    if (!empty($params)):
+        $result = "";
+        foreach ($array as $key => $value):
+            if ($key == $params):
+                $result = $value;
+            endif;
+        endforeach;
+        return $result;
+    endif;
+}
+
+function listPersonStatusColor() {
+    return array(
+        '1' => 'success',
+        '2' => 'warning',
+        '3' => 'primary',
+        '4' => 'danger',
+    );
+}
+
+function print_sql($sql) {
+    return '<textarea class="form-control"> sql ::==> ' . $sql . '</textarea>';
 }
 
 function Gen_Code($code) {
@@ -80,14 +150,5 @@ function Gen_Code($code) {
                 }
             }
         }
-    }
-}
-
-function change_dateYMD_TO_DMY($beforDate) {
-    if (!empty($beforDate)) {
-        $array = explode("-", $beforDate);
-        return $array[2] . "/" . $array[1] . "/" . $array[0];
-    } else {
-        return "";
     }
 }

@@ -38,7 +38,7 @@
                             <td><?= $data['col_nameth'] ?></td>
                             <td><?= $data['col_nameeng'] ?></td>
                             <td><?= format_date('d/m/Y', $data['col_updatedate']) ?></td>
-                            <td><?= $data['col_updateby'] ?></td>
+                            <td><?= $data['per_fname'] ?></td>
                             <td>
                                 <a href="index.php?page=frm-color&id=<?= $data['col_id'] ?>" class="btn btn-primary">
                                     <i class="glyphicon glyphicon-pencil"></i>

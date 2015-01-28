@@ -17,6 +17,8 @@
                         <th>#</th>
                         <th>ชื่อ</th>
                         <th>คำอธิบาย</th>
+                        <th>รุ่น</th>
+                        <th>สี</th>
                         <th>วันที่แก้ไข</th>
                         <th>ผู้แก้ไข</th>
                         <th>แก้ไข</th>
@@ -27,7 +29,9 @@
                     <?php
                     include '../config/connection.php';
                     $sql_product = "SELECT * FROM product b";
-                    $sql_product .= " JOIN person p ON p.per_id = b.prod_updateby";
+                    $sql_product .= " LEFT JOIN person p ON p.per_id = b.prod_updateby";
+                    $sql_product .= " LEFT JOIN model m ON m.mod_id = b.mod_id";
+                    $sql_product .= " LEFT JOIN color c ON c.col_id = b.col_id";
                     $sql_product .= " ORDER BY b.prod_id";
                     $query_product = mysql_query($sql_product) or die(mysql_error());
                     $row = 1;
@@ -37,6 +41,8 @@
                             <td><?= $row ?></td>
                             <td><?= $data['prod_name'] ?></td>
                             <td><?= $data['prod_desc'] ?></td>
+                            <td><?= $data['mod_nameth'] ?></td>
+                            <td><?= $data['col_nameth'] ?></td>
                             <td><?= format_date('d/m/Y', $data['prod_updatedate']) ?></td>
                             <td><?= $data['per_fname'] ?></td>
                             <td>
