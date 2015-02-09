@@ -39,6 +39,44 @@ switch ($_GET['method']) {
             echo returnJson('fail', 'error', 'ไม่พบข้อมูลในระบบ sql :' . $sql, '');
         }
         break;
+    case 'register':
+        if (!empty($_POST)):
+            // ########### variable ##########
+            $fname = $_POST['input-fname'];
+            $lname = $_POST['input-lname'];
+            $username = $_POST['input-username'];
+            $password = $_POST['input-password_1'];
+            $idcard = $_POST['input-idcard'];
+            $address = $_POST['input-address'];
+            $mobile = $_POST['input-mobile'];
+            $email = $_POST['input-email'];
+            // ########### variable ##########
+
+            $sql = " INSERT INTO `person`(";
+            $sql .= " `per_fname`, `per_lname`,";
+            $sql .= " `per_username`, `per_password`,";
+            $sql .= " `per_idcard`, `per_address`,";
+            $sql .= " `per_mobile`, `per_email`, ";
+            $sql .= " `per_createdate`, `per_createby`, ";
+            $sql .= " `per_updatedate`, `per_updateby`,";
+            $sql .=" `per_status`) VALUES (";
+            $sql .= " '$fname','$lname',";
+            $sql .= " '$username','$password',";
+            $sql .= " '$idcard','$address',";
+            $sql .= " '$mobile','$email',";
+            $sql .= " NOW(),0,NOW(),0,";
+            $sql .=" 0";
+            $sql .= " )";
+            $msg = 'ลงทะเบียนผู้ใช้งานใหม่ สำเร็จ กรุณา ล๊อกอินเข้าสู่ระบบ';
+
+            $query = mysql_query($sql) or die(mysql_error() . 'sql ::==' . $sql);
+            if ($query):
+                echo returnJson('success', 'information', $msg, 'index.php?page=login');
+            else:
+                echo returnJson('error', 'error', $msg, '');
+            endif;
+        endif;
+        break;
     case 'logout':
         if (!empty($_SESSION)) {
             unset($_SESSION['person']);
