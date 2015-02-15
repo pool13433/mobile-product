@@ -5,6 +5,7 @@ include '../config/connection.php';
 $repair_id = '';
 $repair_code = '';
 $repair_createdate = '';
+$person_id = '';
 $fname = '';
 $lname = '';
 $idcard = '';
@@ -28,13 +29,14 @@ $per_id = '';
 $repair_status = '0';
 if (!empty($_GET['id'])) {
     $sql = "SELECT * FROM in_repair ir";
-    $sql .= " LEFT JOIN person p ON p.per_idcard = ir.per_idcard";
+    $sql .= " LEFT JOIN person p ON p.per_id = ir.per_id";
     $sql .= " WHERE inrep_id = " . $_GET['id'];
     $query = mysql_query($sql) or die(mysql_error());
     $data = mysql_fetch_assoc($query);
     $repair_id = $data['inrep_id'];
     $repair_code = $data['inrep_code'];
     $repair_createdate = $data['inrep_createdate'];
+    $person_id = $data['per_id'];
     $fname = $data['per_fname'];
     $lname = $data['per_lname'];
     $idcard = $data['per_idcard'];
@@ -111,7 +113,21 @@ endif;
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group">                    
+                    <label for="input-idcard" class="col-sm-1 control-label">เลขบัตร</label>
+                    <div class="col-sm-3 input-append">
+                        <div class="input-group">
+                            <input type="hidden" name="input-person_id" id="input-person_id" value="<?= $person_id ?>"/>
+                            <input type="text" class="form-control validate[required]" maxlength="13"
+                                   data-errormessage-value-missing="กรุณากรอก เลขบัตร ประชาชน"
+                                   name="input-idcard" id="input-idcard" value="<?= $idcard ?>"/>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="btn_search-pid" onclick="search_pid()">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
                     <label for="input-fname" class="col-sm-1 control-label">ชื่อ</label>
                     <div class="col-sm-3">
                         <input type="text" class="form-control validate[required]" 
@@ -123,13 +139,7 @@ endif;
                         <input type="text" class="form-control validate[required]" 
                                data-errormessage-value-missing="กรุณากรอก นามสกุล"
                                name="input-lname" id="input-lname" value="<?= $lname ?>"/>
-                    </div>
-                    <label for="input-idcard" class="col-sm-1 control-label">เลขบัตร</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control validate[required]"  onchange="check_idcard(this)"
-                               data-errormessage-value-missing="กรุณากรอก เลขบัตร ประชาชน"
-                               name="input-idcard" id="input-idcard" value="<?= $idcard ?>"/>
-                    </div>
+                    </div>                    
                 </div>
                 <div class="form-group">
                     <label for="input-address" class="col-sm-1 control-label">ที่อยู่</label>
@@ -225,7 +235,7 @@ endif;
                                 <input type="checkbox" value="0" name="checkbox-accessory[]">
                                 อื่น ๆ ระบุ                                            
                             </label>
-                            <input type="text" name="input-accessory_other" value="<?=$accessory_other?>"/>
+                            <input type="text" name="input-accessory_other" value="<?= $accessory_other ?>"/>
                         </div>
 
                     </div>
@@ -248,7 +258,7 @@ endif;
                                 <input type="checkbox" value="0" name="checkbox-problem[]">
                                 อื่น ๆ ระบุ                                            
                             </label>
-                            <input type="text" name="input-problem_other" value="<?=$proble_other?>"/>
+                            <input type="text" name="input-problem_other" value="<?= $proble_other ?>"/>
                         </div>
                     </div>
                 </div>
@@ -322,14 +332,14 @@ endif;
                         repair_id: repair_id,
                         accessory_id: accessory_id
                     }, function(data) {
-                        console.log('data.status :=='+data.status);
+                console.log('data.status :==' + data.status);
                 if (data.status) {
                     $(object).prop('checked', true);
                 }
             }, 'json');
         });
         //########### checkbox accessory #################
-        
+
         //########### checkbox problem #################
         var length_accessory = $('#box_accessory').find(':checkbox').length;
         //console.log('length_accessory :==' + length_accessory);
@@ -342,14 +352,14 @@ endif;
                         repair_id: repair_id,
                         problem_id: accessory_id
                     }, function(data) {
-                        console.log('data.status :=='+data.status);
+                console.log('data.status :==' + data.status);
                 if (data.status) {
                     $(object).prop('checked', true);
                 }
             }, 'json');
         });
         //########### checkbox problem #################
-        
+
         var valid = $('#frm-in_repair').validationEngine('attach', {
             promptPosition: "centerLeft:50",
             scroll: false,
@@ -363,5 +373,26 @@ endif;
             'padding': '20px',
         });
     });
+
+    function search_pid() {
+        $.post('../action/person.php?method=get_idcard', {idcard: $('#input-idcard').val()}, function(data) {
+            showNotification(data.status, data.title, data.msg, 3);
+            if (data.status == 'success') {
+                $('#input-person_id').val(data.person_id);
+                $('#input-idcard').val(data.idcard);
+                $('#input-fname').val(data.fname);
+                $('#input-lname').val(data.lname);
+                $('#input-address').val(data.address);
+                $('#input-mobile').val(data.mobile);
+            } else {
+                $('#input-person_id').val('');
+                //$('#input-idcard').val('');
+                $('#input-fname').val('');
+                $('#input-lname').val('');
+                $('#input-address').val('');
+                $('#input-mobile').val('');
+            }
+        }, 'json');
+    }
 </script>
 

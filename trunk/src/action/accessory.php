@@ -48,6 +48,20 @@ switch ($_GET['method']) {
             echo returnJson('success', 'information', 'ลบสำเร็จ', '');
         }
         break;
+    case 'get_list_accessory':
+        $repair_id = $_POST['repair_id'];
+        if (!empty($_POST)) {
+            $list = [];
+            $sql = "SELECT * FROM in_repair_accessory ir_a";
+            $sql .= " LEFT JOIN accessory a ON a.acc_id = ir_a.acc_id";
+            $sql .= " WHERE ir_a.inrep_id = $repair_id";
+            $query = mysql_query($sql) or die(mysql_error());
+            while ($data = mysql_fetch_array($query)) {
+                $list[] = $data;
+            }
+            echo json_encode($list);
+        }
+        break;
     default:
         break;
 }

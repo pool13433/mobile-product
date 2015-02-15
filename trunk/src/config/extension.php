@@ -6,6 +6,8 @@ define("MAINPAGE", "login.php");
 // ########### ประกาศค่าคงที่ ##########
 define('ONWER_STATUS', 3);
 define('EMPLOYEE_STATUS', 2);
+define('CUSTOMER_STATUS', 4);
+
 // ########### ประกาศค่าคงที่ ##########
 
 function returnJson($status, $title, $msg, $url) {
@@ -21,15 +23,6 @@ function format_date($format, $date) {
     $date_format = new DateTime($date);
     $new_date = $date_format->format($format);
     return $new_date;
-}
-
-function repair_status() {
-    return array(
-        '0' => 'รอซ่อม',
-        '1' => 'ซ่อม',
-        '2' => 'ซ่อมเสร็จแล้ว',
-        '3' => 'เกิดปัญหา'
-    );
 }
 
 function change_dateDMY_TO_YMD($beforDate) {
@@ -58,10 +51,21 @@ function listPersonStatus() {
 function listRepairStatus() {
     return array(
         1 => 'รอประเมิน',
-        2 => 'ประเมินเสร็จสิ้น รอซ่อม',
-        3 => 'ซ่อม',
-        4 => 'ซ่อมเสร็จแล้ว',
-        5 => 'เกิดปัญหา'
+        2 => 'ประเมินเสร็จสิ้น รอ อนุมัตจากเจ้าของเครื่อง',
+        3 => 'อนุมัติการซ่อม จากลูกค้าเรียบร้อยแล้ว',
+        4 => 'ยกเลิก/ไม่อนุมัติการซ่อม จากลูกค้า',
+        5 => 'ซ่อม',
+        6 => 'ซ่อมเสร็จแล้ว',
+        7 => 'เกิดปัญหา',
+        8 => '<i class="glyphicon glyphicon-ok"></i> รับของเสร็จสิ้น จบการซ่อม'
+    );
+}
+
+function listRepairAppraisers() {
+    return array(
+        '0' => 'รอ ประเมิน',
+        '1' => 'รับซ่อม',
+        '2' => 'ไม่รับซ่อม แล้ว สาเหตุเพราะเครื่อง เก่ามาก'
     );
 }
 
@@ -72,6 +76,9 @@ function listRepairStatusColor() {
         3 => 'success',
         4 => 'danger',
         5 => 'info',
+        6 => 'success',
+        7 => 'danger',
+        8 => 'success',
     );
 }
 

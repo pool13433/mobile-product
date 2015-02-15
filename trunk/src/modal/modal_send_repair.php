@@ -12,8 +12,8 @@
                         <div class="col-sm-6">
                             <input type="hidden" name="input-repair_id_<?= $data['inrep_id'] ?>" value="<?= $data['inrep_id'] ?>"/>                            
                             <select class="form-control" name="combo-repair_status_<?= $data['inrep_id'] ?>">
-                                <option value="2">ซ่อมสำเร็จ</option>
-                                <option value="3">เกิดปัญหาในการซ่อม</option>
+                                <option value="6">ซ่อมสำเร็จ</option>
+                                <option value="7">เกิดปัญหาในการซ่อม</option>
                             </select>
                         </div>
                     </div>       
@@ -47,8 +47,8 @@
         if (repair_status === '') {
             showNotification('danger', 'ข้อความเตือนจากระบบ', 'กรุณาเลือก สถานะการซ่อม', 2);
         } else {
-            if (repair_status === '2' || (repair_status === '3' && repair_status_remark != '')) { // ถ้าเลือก เกิดปัญหา ใส่หมายเหตุด้วย
-                $.post('../action/repair.php?method=send_repair',
+            if (repair_status === '6' || (repair_status === '7' && repair_status_remark != '')) { // ถ้าเลือก เกิดปัญหา ใส่หมายเหตุด้วย
+                $.post('../action/repair_assign.php?method=end_repair',
                         {
                             repair_id: repair_id,
                             repair_status: repair_status,

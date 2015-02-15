@@ -36,6 +36,7 @@ switch ($_GET['method']) {
             }
             echo returnJson('success', 'information', 'เข้าระบบ สำเร็จ', $url);
         } else {
+            var_dump(mysql_fetch_assoc($query));
             echo returnJson('fail', 'error', 'ไม่พบข้อมูลในระบบ sql :' . $sql, '');
         }
         break;
@@ -174,6 +175,33 @@ switch ($_GET['method']) {
             }
         }
         break;
+    case 'profile':
+        if (!empty($_POST)) {
+            $fname = $_POST['input-fname'];
+            $lname = $_POST['input-lname'];
+            $idcard = $_POST['input-idcard'];
+            $address = $_POST['input-address'];
+            $mobile = $_POST['input-mobile'];
+            $email = $_POST['input-email'];
+
+            $sql = " UPDATE `person` SET";
+            $sql .= " `per_fname`='$fname',";
+            $sql .= " `per_lname`='$lname',`per_idcard`='$idcard',";
+            $sql .= " `per_address`='$address',`per_mobile`='$mobile',";
+            $sql .= " `per_email`='$email',";
+            $sql .= " `per_updatedate`=NOW(),`per_updateby`=$ses_id";
+            $sql .= " WHERE `per_id`=" . $_SESSION['person']['per_id'];
+            $query = mysql_query($sql) or die(mysql_error());
+            if ($query) {
+                $sql = "SELECT * FROM person WHERE per_id = " . $_SESSION['person']['per_id'];
+                $query = mysql_query($sql) or die(mysql_error());
+                $_SESSION['person'] = mysql_fetch_assoc($query);
+                echo returnJson('success', 'information', 'แก้ไขข้อมูล สำเร็จ', '');
+            } else {
+                echo returnJson('danger', 'error', 'แก้ไขข้อมูลไม่สำเร็จ', '');
+            }
+        }
+        break;
     case 'delete':
         $id = $_POST['id'];
         $query = mysql_query("DELETE FROM person WHERE per_id = $id") or die(mysql_error());
@@ -198,7 +226,36 @@ switch ($_GET['method']) {
             echo returnJson('danger', 'ตรวจสอบ รหัสบัตรจากระบบ', 'กรอกรหัสบัตรไม่ครบ', '');
         endif;
         break;
+    case 'get_idcard':
+        $idcard = $_POST['idcard'];
+        if (strlen($idcard) >= 13): //จำนวนความยาวต้อง 13 ตัวอักษร
+            $sql = "SELECT * FROM person WHERE per_idcard = '$idcard'";
+            $query = mysql_query($sql) or die(mysql_error());
+            $row = mysql_num_rows($query);
+            if ($row == 1):
+                $data = mysql_fetch_assoc($query);
+                // เจอ รหัสบัตรผู้ใช้งาน เก่า
+                echo json_encode(array(
+                    'status' => 'success',
+                    'title' => 'ตรวจสอบรหัสบัตรประชาชน',
+                    'msg' => 'พบรหัสบัตรประชาชน ผู้ใช้งาน เป็นลูกค้ารายเก่า',
+                    'person_id' => $data['per_id'],
+                    'fname' => $data['per_fname'],
+                    'lname' => $data['per_lname'],
+                    'idcard' => $data['per_idcard'],
+                    'address' => $data['per_address'],
+                    'mobile' => $data['per_mobile']
+                ));
+            else:
+                // ยังไม่พบ personal id
+                echo returnJson('danger', 'ตรวจสอบ รหัสบัตรจากระบบ', 'ไม่พบรหัสบัตรประชาชน ลูกค้ารายใหม่ กรุณากรอกข้อมูล', '');
+            endif;
+        else:
+            echo returnJson('danger', 'ตรวจสอบ รหัสบัตรจากระบบ', 'กรอกรหัสบัตรไม่ครบ', '');
+        endif;
+        break;
     default:
+        echo 'default';
         break;
 }
 
