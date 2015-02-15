@@ -1,12 +1,12 @@
-<form class="form-horizontal" name="frm-assign_repair_<?= $data['inrep_id'] ?>" id="frm-assign_repair_<?= $data['inrep_id'] ?>">
-    <div class="modal fade" id="modal-repair<?= $data['inrep_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel">มอบหมายงาน</h4>
-                </div>
-                <div class="modal-body">                
+<div class="modal fade" id="modal-repair<?= $data['inrep_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">มอบหมายงาน</h4>
+            </div>
+            <div class="modal-body">      
+                <form class="form-horizontal" name="frm-assign_repair_<?= $data['inrep_id'] ?>" id="frm-assign_repair_<?= $data['inrep_id'] ?>">
                     <div class="form-group">
                         <label for="input-employee" class="col-sm-5 control-label">ชื่อพนักงานซ่อม</label>
                         <div class="col-sm-6">
@@ -63,19 +63,19 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">                    
-                    <button type="submit" class="btn btn-primary"> <!-- onclick="assign_repair(<?= $data['inrep_id'] ?>)"-->
-                        <i class="glyphicon glyphicon-ok-sign"></i> บันทึก
-                    </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        <i class="glyphicon glyphicon-remove-sign"></i> ปิด
-                    </button>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">                    
+                <button type="submit" class="btn btn-primary" onclick="javascript:$('#frm-assign_repair_<?= $data['inrep_id'] ?>').submit()">
+                    <i class="glyphicon glyphicon-ok-sign"></i> บันทึก
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <i class="glyphicon glyphicon-remove-sign"></i> ปิด
+                </button>
             </div>
         </div>
     </div>
-</form>
+</div>
 <script type="text/javascript">
     $(document).ready(function() {
         var modal_id = <?= $data['inrep_id'] ?>;
@@ -84,24 +84,20 @@
             promptPosition: "centerLeft:30",
             scroll: false,
             onValidationComplete: function(form, status) {
-                console.log('status :==' + status);
                 if (status) {
-                    assign_repair(modal_id);
+                    $.post('../action/repair_assign.php?method=assign_repair',
+                            $(form).serialize(),
+                            function(data) {
+                                if (data.status == 'success') {
+                                    showNotification('success', data.title, data.msg, 3);
+                                    reloadDelay(2);
+                                } else {
+                                    showNotification('danger', data.title, data.msg, 3);
+                                }
+                            }, 'json');
                 }
             }
         });
     });
-    var assign_repair = function(modal_id) {
-        $.post('../action/repair_assign.php?method=assign_repair',
-                //{repair_id: repair_id,employee_id: employee_id}
-                $('#frm-assign_repair_' + modal_id).serialize(),
-                function(data) {
-                    if (data.status == 'success') {
-                        showNotification('success', data.title, data.msg, 3);
-                        reloadDelay(2);
-                    } else {
-                        showNotification('danger', data.title, data.msg, 3);
-                    }
-                }, 'json');
-    }
+
 </script>

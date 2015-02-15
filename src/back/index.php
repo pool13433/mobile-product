@@ -66,11 +66,11 @@
                                 </div>
                                 <?php
                             }
-                            include '../modal/modal_profile.php';
-                            include '../modal/modal_chang_password.php';
                         } else {
                             include './home.php';
                         }
+                        include '../modal/modal_profile.php';
+                        include '../modal/modal_chang_password.php';
                     endif;
                     ?>
                 </div>
