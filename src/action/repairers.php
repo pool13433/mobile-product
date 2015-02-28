@@ -34,7 +34,7 @@ switch ($_GET['method']) {
                 $employee_id = $_POST['combo-employee'];
                 $repair_repairers = $_POST['input-repair_repairers'];
                 if (empty($_POST['input-repair_repairers'])):
-                    $sql_assign = " INSERT INTO `repair_assign`(";
+                    $sql_assign = " INSERT INTO `repairers`(";
                     $sql_assign .= " `rep_id`, `rep_repairers`, `rep_suppose_startdate`,";
                     $sql_assign .= " `rep_suppose_enddate`, `rep_estimate_date`,";
                     //$sql_assign .= " `rep_estimate_status`, `rep_estimate_remark`,";
@@ -50,7 +50,7 @@ switch ($_GET['method']) {
                     $sql_assign .= " )";
                     $msg = 'หมอบหมายงาน เรียบร้อย';
                 else:
-                    $sql_assign = " UPDATE `repair_assign` SET ";
+                    $sql_assign = " UPDATE `repairers` SET ";
                     $sql_assign .= " `rep_repairers` = $employee_id,";
                     $sql_assign .= " `rep_suppose_startdate` = STR_TO_DATE('$suppose_startdate','%d-%m-%Y'),";
                     $sql_assign .= " `rep_suppose_enddate` = STR_TO_DATE('$suppose_enddate','%d-%m-%Y')";
@@ -80,7 +80,7 @@ switch ($_GET['method']) {
             $sql_in_repair .= " WHERE inrep_id = $id";
             $query_in = mysql_query($sql_in_repair) or die(mysql_error());
             if ($query_in) {
-                $sql_assign = "UPDATE repair_assign SET ";
+                $sql_assign = "UPDATE repairers SET ";
                 $sql_assign .= " rep_estimate_status = $status,";
                 $sql_assign .= " rep_estimate_date = NOW(),";
                 $sql_assign .= " rep_estimate_price = $price,";
@@ -125,7 +125,7 @@ switch ($_GET['method']) {
         $sql .= " WHERE inrep_id = $repair_id";
         $query = mysql_query($sql) or die(mysql_error() . 'sql ::==' . $sql);
         if ($query) {
-            $sql = "UPDATE repair_assign SET ";
+            $sql = "UPDATE repairers SET ";
             $sql .= " rep_actual_startdate = NOW()";
             $sql .= " WHERE rep_id = $repair_id";
             $query = mysql_query($sql) or die(mysql_error());
@@ -149,7 +149,7 @@ switch ($_GET['method']) {
         $sql .= " WHERE inrep_id = $repair_id";
         $query = mysql_query($sql) or die(mysql_error() . 'sql ::==' . $sql);
         if ($query) {
-            $sql = "UPDATE repair_assign SET ";
+            $sql = "UPDATE repairers SET ";
             $sql .= " rep_actual_enddate = NOW(),";
             $sql .= " rep_status_remark = '$repair_status_remark'";
             $sql .= " WHERE rep_id = $repair_id";

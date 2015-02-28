@@ -1,12 +1,12 @@
 <div class="col-sm-3 col-md-2 sidebar">
     <ul class="nav nav-sidebar">
         <li class="active"><a href="#"><i class="glyphicon glyphicon-list-alt"></i> เมนูการใช้งาน</a></li>
-        <?php if ($_SESSION['person']['per_status'] != EMPLOYEE_STATUS && $_SESSION['person']['per_status'] != CUSTOMER_STATUS): ?>
+        <?php if ($_SESSION['person']['per_status'] != REPAIRMAN_STATUS && $_SESSION['person']['per_status'] != CUSTOMER_STATUS): ?>
             <li><a href="index.php?page=list-person"><i class="glyphicon glyphicon-user"></i> ผู้ใช้งานในระบบ</a></li>        
             <li><a href="index.php?page=list-prefix"><i class="glyphicon glyphicon-check"></i> คำนำหน้าชื่อ</a></li>  
         <?php endif; ?>
     </ul>
-    <?php if ($_SESSION['person']['per_status'] != EMPLOYEE_STATUS && $_SESSION['person']['per_status'] != CUSTOMER_STATUS): ?>
+    <?php if ($_SESSION['person']['per_status'] != REPAIRMAN_STATUS && $_SESSION['person']['per_status'] != CUSTOMER_STATUS): ?>
         <ul class="nav nav-sidebar">
             <li><a href="index.php?page=list-brand"><i class="glyphicon glyphicon-adjust"></i> รายการ ยี้ห้อเครื่อง</a></li>
             <li><a href="index.php?page=list-model"><i class="glyphicon glyphicon-stats"></i> รายการ รุ่นเครื่อง</a></li>
@@ -17,12 +17,15 @@
         </ul>
     <?php endif; ?>
     <ul class="nav nav-sidebar">
-        <?php if ($_SESSION['person']['per_status'] != EMPLOYEE_STATUS && $_SESSION['person']['per_status'] != CUSTOMER_STATUS) { ?>
-            <li><a href="index.php?page=list-in_repair"><i class="glyphicon glyphicon-wrench"></i> รายการ ใบซ่อมเข้า</a></li>
+        <?php if ($_SESSION['person']['per_status'] == REPAIRMAN_STATUS) { ?>            
             <li><a href="index.php?page=list-repair"><i class="glyphicon glyphicon-wrench"></i> จัดการ ซ่อม</a></li>
+        <?php } else if ($_SESSION['person']['per_status'] == CUSTOMER_STATUS) { ?>
+            <li><a href="index.php?page=list-repair"><i class="glyphicon glyphicon-wrench"></i> จัดการ ซ่อม</a></li>            
         <?php } else { ?>
+            <li><a href="index.php?page=list-repair_in"><i class="glyphicon glyphicon-arrow-down"></i> รายการ ใบซ่อมเข้า</a></li>
             <li><a href="index.php?page=list-repair"><i class="glyphicon glyphicon-wrench"></i> จัดการ ซ่อม</a></li>
-            <?php } ?>
+            <li><a href="index.php?page=list-repair_finish"><i class="glyphicon glyphicon-ok-circle"></i> รายการ ซ่อมเสร็จสิ้น</a></li>
+        <?php } ?>
     </ul>
     <ul class="nav nav-sidebar">
         <li><a href="index.php?page=report-1"><i class="glyphicon glyphicon-book"></i> รายงานยอดซ่อม</a></li>

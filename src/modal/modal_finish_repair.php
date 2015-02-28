@@ -84,7 +84,7 @@
             console.log('LIST_ACCESSORY::==' + LIST_ACCESSORY.length);
             console.log('JSON.stringify(s)' + JSON.stringify(LIST_ACCESSORY));
             // ################## post ##########
-            $.post('../action/repair_assign.php?method=finish_repair',
+            $.post('../action/repairers.php?method=finish_repair',
                     {
                         repair_id: repair_id,
                         accessory: JSON.stringify(LIST_ACCESSORY)
