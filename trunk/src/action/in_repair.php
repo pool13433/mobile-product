@@ -161,7 +161,7 @@ switch ($_GET['method']) {
             endfor;
             // ################### problem #############
 
-            echo returnJson('success', 'information', $message, 'index.php?page=list-in_repair');
+            echo returnJson('success', 'information', $message, 'index.php?page=list-repair_in');
         else:
             exit("ไม่สามารถ เพิ่มใบซ่อมเข้าระบบได้ กรุณาติดต่อเจ้าหน้าที่ดูแลระบบ");
             echo returnJson('danger', 'error', 'ไม่สามารถ เพิ่มใบซ่อมเข้าระบบได้ กรุณาติดต่อเจ้าหน้าที่ดูแลระบบ', '');

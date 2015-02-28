@@ -44,7 +44,7 @@ if (!empty($_GET)) {
     $sql_repair .= " ";
     $sql_repair .=" FROM in_repair ir ";
     $sql_repair .=" LEFT JOIN person p ON p.per_id = ir.per_id";
-    $sql_repair .= " LEFT JOIN repair_assign ra ON ra.rep_id = ir.inrep_id";
+    $sql_repair .= " LEFT JOIN repairers ra ON ra.rep_id = ir.inrep_id";
     $sql_repair .=" WHERE inrep_id = $repair_id";
     $query_repair = mysql_query($sql_repair) or die(mysql_error());
     $repair = mysql_fetch_assoc($query_repair);

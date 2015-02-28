@@ -48,7 +48,7 @@
             showNotification('danger', 'ข้อความเตือนจากระบบ', 'กรุณาเลือก สถานะการซ่อม', 2);
         } else {
             if (repair_status === '6' || (repair_status === '7' && repair_status_remark != '')) { // ถ้าเลือก เกิดปัญหา ใส่หมายเหตุด้วย
-                $.post('../action/repair_assign.php?method=end_repair',
+                $.post('../action/repairers.php?method=end_repair',
                         {
                             repair_id: repair_id,
                             repair_status: repair_status,

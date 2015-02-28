@@ -82,7 +82,7 @@ endif;
             <i class="glyphicon glyphicon-bell"></i> แบบฟอร์มรับซ่อมมือถือ
         </h4>
         <div class="btn-group pull-right">
-            <a href="index.php?page=list-in_repair" class="btn btn-warning">
+            <a href="index.php?page=list-repair_in" class="btn btn-warning">
                 <i class="glyphicon glyphicon-arrow-left"></i> ย้อนกลับ
             </a>
         </div>
@@ -297,7 +297,7 @@ endif;
                         <button type="submit" class="btn btn-success">
                             <i class="glyphicon glyphicon-saved"></i> บันทึก
                         </button>
-                        <a href="index.php?page=list-in_repair" class="btn btn-warning">
+                        <a href="index.php?page=list-repair_in" class="btn btn-warning">
                             <i class="glyphicon glyphicon-arrow-left"></i> ย้อนกลับ
                         </a>
                     </div>

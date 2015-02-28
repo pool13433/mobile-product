@@ -55,7 +55,7 @@
             scroll: false,
             onValidationComplete: function(form, status) {
                 if (status) {
-                    $.post('../action/repair_assign.php?method=update_appraisers',
+                    $.post('../action/repairers.php?method=update_appraisers',
                             $(form).serialize(),
                             function(data) {
                                 if (data.status == 'success') {

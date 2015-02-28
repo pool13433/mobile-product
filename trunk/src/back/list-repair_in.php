@@ -4,7 +4,7 @@
             <i class="glyphicon glyphicon-phone"></i> รายการ แบบฟอร์มรับซ่อมมือถือ
         </h4>
         <div class="btn-group pull-right">
-            <a href="index.php?page=frm-in_repair" class="btn btn-info">
+            <a href="index.php?page=frm-repair_in" class="btn btn-info">
                 <i class="glyphicon glyphicon-plus-sign"></i> สร้าง
             </a>
         </div>
@@ -42,7 +42,7 @@
                             <td><?= format_date('d/m/Y', $data['inrep_updatedate']) ?></td>
                             <td><?= $data['per_fname'] ?></td>
                             <td>
-                                <a href="index.php?page=frm-in_repair&id=<?= $data['inrep_id'] ?>" class="btn btn-primary">
+                                <a href="index.php?page=frm-repair_in&id=<?= $data['inrep_id'] ?>" class="btn btn-primary">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </a>
                             </td>

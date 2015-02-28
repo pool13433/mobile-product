@@ -41,14 +41,7 @@ endif;
                     $sql_in_repair .= " LEFT JOIN person e ON e.per_id = ra.rep_repairers";
                     $sql_in_repair .= " LEFT JOIN person c ON c.per_id = b.per_id";
                     $sql_in_repair .= " WHERE 1=1 ";
-                    $sql_in_repair .= " AND b.inrep_status < 6";
-                    if ($person['per_status'] == REPAIRMAN_STATUS) { // พนักงาน จะไม่เห็น การซ่อมที่ถูกยกเลิก
-                        $sql_in_repair .= " AND ra.rep_repairers = $ses_id";
-                        $sql_in_repair .= " AND b.inrep_status != 4 ";  // 4 => 'ยกเลิก/ไม่อนุมัติการซ่อม จากลูกค้า',                      
-                    } else if ($person['per_status'] == CUSTOMER_STATUS) {
-                        //$sql_in_repair .= " AND b.inrep_status IN (2,3,4,5,6,7,8,9,10)";  // 4 => 'ยกเลิก/ไม่อนุมัติการซ่อม จากลูกค้า',
-                        $sql_in_repair .= " AND b.per_id = $ses_id";
-                    }
+                    $sql_in_repair .= " AND b.inrep_status IN (6,7,8,9,10)";  // 4 => 'ยกเลิก/ไม่อนุมัติการซ่อม จากลูกค้า',
                     $sql_in_repair .= " ORDER BY b.inrep_id";
 
                     echo print_sql($sql_in_repair);

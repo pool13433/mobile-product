@@ -85,7 +85,7 @@
             scroll: false,
             onValidationComplete: function(form, status) {
                 if (status) {
-                    $.post('../action/repair_assign.php?method=assign_repair',
+                    $.post('../action/repairers.php?method=assign_repair',
                             $(form).serialize(),
                             function(data) {
                                 if (data.status == 'success') {

@@ -4,8 +4,9 @@ date_default_timezone_set('UTC');
 define("MAINPAGE", "login.php");
 
 // ########### ประกาศค่าคงที่ ##########
+define('EMPLOYEE_STATUS', 1);  // พนักงานร้าน
+define('REPAIRMAN_STATUS', 2); // พนักงานซ่อม
 define('ONWER_STATUS', 3);
-define('EMPLOYEE_STATUS', 2);
 define('CUSTOMER_STATUS', 4);
 
 // ########### ประกาศค่าคงที่ ##########
