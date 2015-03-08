@@ -31,31 +31,31 @@ endif;
                 <tbody>
                     <?php
                     include '../config/connection.php';
-                    $sql_in_repair = "SELECT b.*,ra.*,";
-                    $sql_in_repair .= " concat(p.per_fname,'    ',p.per_lname) as updateby,";
-                    $sql_in_repair .= " concat(e.per_fname,'   ',e.per_lname) as employee,";
-                    $sql_in_repair .= " c.*";
-                    $sql_in_repair .= " FROM in_repair b";
-                    $sql_in_repair .= " LEFT JOIN repairers ra ON ra.rep_id = b.inrep_id";
-                    $sql_in_repair .= " LEFT JOIN person p ON p.per_id = b.inrep_updateby";
-                    $sql_in_repair .= " LEFT JOIN person e ON e.per_id = ra.rep_repairers";
-                    $sql_in_repair .= " LEFT JOIN person c ON c.per_id = b.per_id";
-                    $sql_in_repair .= " WHERE 1=1 ";
-                    $sql_in_repair .= " AND b.inrep_status < 6";
+                    $sql_repair = "SELECT b.*,ra.*,";
+                    $sql_repair .= " concat(p.per_fname,'    ',p.per_lname) as updateby,";
+                    $sql_repair .= " concat(e.per_fname,'   ',e.per_lname) as employee,";
+                    $sql_repair .= " c.*";
+                    $sql_repair .= " FROM repair b";
+                    $sql_repair .= " LEFT JOIN repairers ra ON ra.rep_id = b.inrep_id";
+                    $sql_repair .= " LEFT JOIN person p ON p.per_id = b.inrep_updateby";
+                    $sql_repair .= " LEFT JOIN person e ON e.per_id = ra.rep_repairers";
+                    $sql_repair .= " LEFT JOIN person c ON c.per_id = b.per_id";
+                    $sql_repair .= " WHERE 1=1 ";
+                    $sql_repair .= " AND b.inrep_status < 6";
                     if ($person['per_status'] == REPAIRMAN_STATUS) { // พนักงาน จะไม่เห็น การซ่อมที่ถูกยกเลิก
-                        $sql_in_repair .= " AND ra.rep_repairers = $ses_id";
-                        $sql_in_repair .= " AND b.inrep_status != 4 ";  // 4 => 'ยกเลิก/ไม่อนุมัติการซ่อม จากลูกค้า',                      
+                        $sql_repair .= " AND ra.rep_repairers = $ses_id";
+                        $sql_repair .= " AND b.inrep_status != 4 ";  // 4 => 'ยกเลิก/ไม่อนุมัติการซ่อม จากลูกค้า',                      
                     } else if ($person['per_status'] == CUSTOMER_STATUS) {
-                        //$sql_in_repair .= " AND b.inrep_status IN (2,3,4,5,6,7,8,9,10)";  // 4 => 'ยกเลิก/ไม่อนุมัติการซ่อม จากลูกค้า',
-                        $sql_in_repair .= " AND b.per_id = $ses_id";
+                        //$sql_repair .= " AND b.inrep_status IN (2,3,4,5,6,7,8,9,10)";  // 4 => 'ยกเลิก/ไม่อนุมัติการซ่อม จากลูกค้า',
+                        $sql_repair .= " AND b.per_id = $ses_id";
                     }
-                    $sql_in_repair .= " ORDER BY b.inrep_id";
+                    $sql_repair .= " ORDER BY b.inrep_id";
 
-                    echo print_sql($sql_in_repair);
+                    echo print_sql($sql_repair);
 
-                    $query_in_repair = mysql_query($sql_in_repair) or die(mysql_error());
+                    $query_repair = mysql_query($sql_repair) or die(mysql_error());
                     $row = 1;
-                    while ($data = mysql_fetch_array($query_in_repair)):
+                    while ($data = mysql_fetch_array($query_repair)):
                         ?>
                         <tr>
                             <td>

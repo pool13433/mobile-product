@@ -35,8 +35,7 @@ switch ($_GET['method']) {
                     break;
             }
             echo returnJson('success', 'information', 'เข้าระบบ สำเร็จ', $url);
-        } else {
-            var_dump(mysql_fetch_assoc($query));
+        } else {            
             echo returnJson('fail', 'error', 'ไม่พบข้อมูลในระบบ sql :' . $sql, '');
         }
         break;
@@ -125,14 +124,20 @@ switch ($_GET['method']) {
             $id = $_POST['input-id'];
             $fname = $_POST['input-fname'];
             $lname = $_POST['input-lname'];
-            $username = $_POST['input-username'];
-            $password = $_POST['input-password'];
-            $password_confirm = $_POST['input-password_re'];
+            $username = (empty($_POST['input-username']) ? '' : $_POST['input-username']);
+            $password = (empty($_POST['input-password']) ? '' : $_POST['input-password']);
+            $password_confirm = (empty($_POST['input-password_re']) ? '' : $_POST['input-password_re']);
             $idcard = $_POST['input-idcard'];
             $address = $_POST['input-address'];
             $mobile = $_POST['input-mobile'];
             $email = $_POST['input-email'];
-            $status = $_POST['combo-status'];
+            $status = (empty($_POST['combo-status']) ? CUSTOMER_STATUS : $_POST['combo-status']);
+            $cmd = (empty($_POST['cmd']) ? '' : $_POST['cmd']);
+            
+            if(empty($ses_id)){
+                $ses_id = $id;
+            }
+            
             if (empty($_POST['input-id'])) { // NEW 
                 $sql = " INSERT INTO `person`(";
                 $sql .= " `per_fname`, `per_lname`,";
@@ -168,7 +173,11 @@ switch ($_GET['method']) {
             }
             $query = mysql_query($sql) or die(mysql_error() . 'sql :' . $sql);
             if ($query) {
-                echo returnJson('success', $title, $msg, 'index.php?page=list-person');
+                if ($cmd == CUSTOMER_STATUS) {
+                    echo returnJson('success', $title, $msg, 'index.php?page=list-repair&pid=' . $idcard);
+                } else {
+                    echo returnJson('success', $title, $msg, 'index.php?page=list-person');
+                }
             } else {
                 exit("การประมวลผลเกิดข้อผิดพลาด");
                 echo returnJson('danger', $title, $msg, '');

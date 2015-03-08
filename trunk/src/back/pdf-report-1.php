@@ -14,7 +14,7 @@ $sql .= " DATE_FORMAT(`rep_suppose_startdate`,'%d-%m-%Y') rep_suppose_startdate,
 $sql .= " DATE_FORMAT(`rep_suppose_enddate`,'%d-%m-%Y') rep_suppose_enddate,";
 $sql .= " DATEDIFF( ra.`rep_suppose_enddate` , ra.`rep_suppose_startdate` ) count_working,";
 $sql .= " rep_estimate_price";
-$sql .= " FROM `in_repair` ir";
+$sql .= " FROM `repair` ir";
 $sql .= " LEFT JOIN repairers ra ON ra.rep_id = ir.inrep_id";
 $sql .= " LEFT JOIN person p ON p.per_id = ir.per_id";
 $sql .= " WHERE 1=1";

@@ -28,7 +28,7 @@ $per_id = '';
 
 $repair_status = '0';
 if (!empty($_GET['id'])) {
-    $sql = "SELECT * FROM in_repair ir";
+    $sql = "SELECT * FROM repair ir";
     $sql .= " LEFT JOIN person p ON p.per_id = ir.per_id";
     $sql .= " WHERE inrep_id = " . $_GET['id'];
     $query = mysql_query($sql) or die(mysql_error());
@@ -69,7 +69,7 @@ endif;
 //############ session ###########
 //############ gen code ###########
 if (empty($repair_code)):
-    $sql_gen = "SELECT * FROM in_repair ORDER BY inrep_id DESC LIMIT 0,1";
+    $sql_gen = "SELECT * FROM repair ORDER BY inrep_id DESC LIMIT 0,1";
     $query_gen = mysql_query($sql_gen) or die(mysql_error());
     $result_gen = mysql_fetch_assoc($query_gen);
     $repair_code = 'RP' . Gen_Code($result_gen['inrep_id']);
@@ -89,7 +89,7 @@ endif;
     </div>
     <div class="panel-body">
         <div class="table-responsive">
-            <form class="form-horizontal" name="frm-in_repair" id="frm-in_repair">
+            <form class="form-horizontal" name="frm-repair" id="frm-repair">
                 <div class="form-group">
                     <label for="input-repair_code" class="col-sm-1 control-label">เลขที่</label>
                     <div class="col-sm-3">
@@ -327,7 +327,7 @@ endif;
             //console.log('index :==' + index);
             //console.log('object :==' + $(object).val());
             var accessory_id = $(object).val();
-            $.post('../action/in_repair.php?method=get_accessory_is_check',
+            $.post('../action/repair.php?method=get_accessory_is_check',
                     {
                         repair_id: repair_id,
                         accessory_id: accessory_id
@@ -347,7 +347,7 @@ endif;
             //console.log('index :==' + index);
             //console.log('object :==' + $(object).val());
             var accessory_id = $(object).val();
-            $.post('../action/in_repair.php?method=get_problem_is_check',
+            $.post('../action/repair.php?method=get_problem_is_check',
                     {
                         repair_id: repair_id,
                         problem_id: accessory_id
@@ -360,12 +360,12 @@ endif;
         });
         //########### checkbox problem #################
 
-        var valid = $('#frm-in_repair').validationEngine('attach', {
+        var valid = $('#frm-repair').validationEngine('attach', {
             promptPosition: "centerLeft:50",
             scroll: false,
             onValidationComplete: function(form, status) {
                 if (status) {
-                    post_form('frm-in_repair', '../action/in_repair.php?method=create');
+                    post_form('frm-repair', '../action/repair.php?method=create');
                 }
             }});
         valid.css({

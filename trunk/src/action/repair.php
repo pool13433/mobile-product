@@ -86,7 +86,7 @@ switch ($_GET['method']) {
         //####################### manage person #############
         //####################### manage repair #############
         if (empty($_POST['input-id'])): // insert 
-            $sql = " INSERT INTO `in_repair`(";
+            $sql = " INSERT INTO `repair`(";
             $sql .= "  `inrep_code`,`per_id`, `inrep_createdate`,";
             $sql .= " `inrep_getdate`,`inrep_realdate`, `inrep_remark`,`inrep_accessory_other`,`inrep_problem_other`,";
             $sql .= " `bra_id`, `mod_id`, `inrep_emi`, `col_id`,";
@@ -99,7 +99,7 @@ switch ($_GET['method']) {
             $sql .= " )";
             $message = 'เพิ่มใบซ่อมเข้าระบบสำเร็จ';
         else: // update
-            $sql = " UPDATE `in_repair` SET";
+            $sql = " UPDATE `repair` SET";
             $sql .= " `inrep_code`='$repair_code',";
             $sql .= " `per_id` = '$person_id',";
             $sql .= " `inrep_createdate`=STR_TO_DATE('$repair_createdate','%d-%m-%Y'),";
@@ -129,14 +129,14 @@ switch ($_GET['method']) {
 
             // ################### accessory #############
             if (!empty($_POST['input-id'])):
-                $query_accessory = mysql_query("DELETE FROM in_repair_accessory WHERE inrep_id =$repair_id") or die(mysql_error());
+                $query_accessory = mysql_query("DELETE FROM repair_accessory WHERE inrep_id =$repair_id") or die(mysql_error());
                 if (!$query_accessory):
                     exit("ลบข้อมูลไม่สำเร็จ");
                 endif;
             endif;
             for ($i = 0; $i < count($accessory); $i++):
                 $accessory_id = $accessory[$i];
-                $sql_accessory = " INSERT INTO `in_repair_accessory`(";
+                $sql_accessory = " INSERT INTO `repair_accessory`(";
                 $sql_accessory .= "  `acc_id`, `inrepacc_check`,`inrep_id`) VALUES (";
                 $sql_accessory .= " $accessory_id,0,$insert_repair_id";
                 $sql_accessory .= " )";
@@ -146,14 +146,14 @@ switch ($_GET['method']) {
             // ################### accessory #############
             // ################### problem #############
             if (!empty($_POST['input-id'])):
-                $query_problem = mysql_query("DELETE FROM in_repair_problem WHERE inrep_id = $repair_id") or die(mysql_error());
+                $query_problem = mysql_query("DELETE FROM repair_problem WHERE inrep_id = $repair_id") or die(mysql_error());
                 if (!$query_problem):
                     exit("ลบข้อมูลไม่สำเร็จ");
                 endif;
             endif;
             for ($j = 0; $j < count($proble); $j++):
                 $problem_id = $proble[$j];
-                $sql_problem = " INSERT INTO `in_repair_problem`(";
+                $sql_problem = " INSERT INTO `repair_problem`(";
                 $sql_problem .= " `prob_id`, `inrep_id`) VALUES (";
                 $sql_problem .= " $problem_id,$insert_repair_id";
                 $sql_problem .= " )";
@@ -169,14 +169,14 @@ switch ($_GET['method']) {
         break;
     case 'delete':
         $repair_id = $_POST['id'];
-        $query = mysql_query("DELETE FROM in_repair WHERE inrep_id = $repair_id") or die(mysql_error());
+        $query = mysql_query("DELETE FROM repair WHERE inrep_id = $repair_id") or die(mysql_error());
         if ($query) {
             //############# remove chidren ########
-            $query_accessory = mysql_query("DELETE FROM in_repair_accessory WHERE inrep_id =$repair_id") or die(mysql_error());
+            $query_accessory = mysql_query("DELETE FROM repair_accessory WHERE inrep_id =$repair_id") or die(mysql_error());
             if (!$query_accessory):
                 exit("ลบข้อมูลไม่สำเร็จ");
             endif;
-            $query_problem = mysql_query("DELETE FROM in_repair_problem WHERE inrep_id = $repair_id") or die(mysql_error());
+            $query_problem = mysql_query("DELETE FROM repair_problem WHERE inrep_id = $repair_id") or die(mysql_error());
             if (!$query_problem):
                 exit("ลบข้อมูลไม่สำเร็จ");
             endif;
@@ -187,7 +187,7 @@ switch ($_GET['method']) {
     case 'get_accessory_is_check':
         $repair_id = $_POST['repair_id'];
         $accessory_id = $_POST['accessory_id'];
-        $sql = "SELECT * FROM in_repair_accessory WHERE inrep_id = $repair_id AND acc_id = $accessory_id";
+        $sql = "SELECT * FROM repair_accessory WHERE inrep_id = $repair_id AND acc_id = $accessory_id";
         $query = mysql_query($sql) or die(mysql_error());
         $row = mysql_num_rows($query);
         if ($row > 0):
@@ -197,7 +197,7 @@ switch ($_GET['method']) {
     case 'get_problem_is_check':
         $repair_id = $_POST['repair_id'];
         $problem_id = $_POST['problem_id'];
-        $sql = "SELECT * FROM in_repair_problem WHERE inrep_id = $repair_id AND prob_id = $problem_id";
+        $sql = "SELECT * FROM repair_problem WHERE inrep_id = $repair_id AND prob_id = $problem_id";
         $query = mysql_query($sql) or die(mysql_error());
         $row = mysql_num_rows($query);
         if ($row > 0):

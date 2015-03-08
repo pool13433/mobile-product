@@ -16,7 +16,7 @@ $sql .= " ELSE 'ยังไม่ประเมิน'";
 $sql .= " END rep_estimate_status, `rep_estimate_remark` , `rep_estimate_price`";
 $sql .= " FROM person p";
 $sql .= " LEFT JOIN repairers ra ON ra.`rep_repairers` = p.per_id";
-$sql .= " LEFT JOIN in_repair ir ON ir.inrep_id = ra.rep_id";
+$sql .= " LEFT JOIN repair ir ON ir.inrep_id = ra.rep_id";
 $sql .= " WHERE p.per_status =2";
 $sql .= " ORDER BY p.per_fname, ir.inrep_code ASC ";
 

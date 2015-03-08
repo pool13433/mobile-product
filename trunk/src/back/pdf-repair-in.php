@@ -42,7 +42,7 @@ if (!empty($_GET)) {
     $sql_repair .= " DATE_FORMAT(`rep_actual_enddate`,'%d/%m/%Y') rep_actual_enddate,";
     $sql_repair .= " `rep_status_remark`";
     $sql_repair .= " ";
-    $sql_repair .=" FROM in_repair ir ";
+    $sql_repair .=" FROM repair ir ";
     $sql_repair .=" LEFT JOIN person p ON p.per_id = ir.per_id";
     $sql_repair .= " LEFT JOIN repairers ra ON ra.rep_id = ir.inrep_id";
     $sql_repair .=" WHERE inrep_id = $repair_id";
@@ -88,7 +88,7 @@ if (!empty($_GET)) {
                     <p style="text-decoration: underline;">
                         <?php
                         $str_problem = '';
-                        $sql_problem = "SELECT * FROM in_repair_problem ir_p";
+                        $sql_problem = "SELECT * FROM repair_problem ir_p";
                         $sql_problem .= " JOIN problem p ON p.prob_id = ir_p.prob_id";
                         $sql_problem .= " WHERE inrep_id = " . $repair['inrep_id'];
                         $query_problem = mysql_query($sql_problem) or die(mysql_error());
@@ -109,7 +109,7 @@ if (!empty($_GET)) {
                     <p style="text-decoration: underline;">
                         <?php
                         $str_accessory = '';
-                        $sql_accessory = "SELECT * FROM in_repair_accessory ir_a";
+                        $sql_accessory = "SELECT * FROM repair_accessory ir_a";
                         $sql_accessory .= " JOIN accessory a ON a.acc_id = ir_a.acc_id";
                         $sql_accessory .= " WHERE inrep_id = " . $repair['inrep_id'];
                         $query_accessory = mysql_query($sql_accessory) or die(mysql_error());

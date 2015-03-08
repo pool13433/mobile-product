@@ -22,7 +22,7 @@ switch ($_GET['method']) {
              *   4 => 'ซ่อมเสร็จแล้ว',
              *  5 => 'เกิดปัญหา'
              */
-            $sql = " UPDATE `in_repair` SET";
+            $sql = " UPDATE `repair` SET";
             $sql .= " `inrep_status` = 1,"; // 1 = รอประเมิน
             $sql .= " inrep_updatedate = NOW(),";
             $sql .= " inrep_updateby = $ses_id";
@@ -75,10 +75,10 @@ switch ($_GET['method']) {
         $status = $_POST['status'];
         $price = $_POST['price'];
         if (!empty($_POST)) {
-            $sql_in_repair = "UPDATE in_repair SET ";
-            $sql_in_repair .= " inrep_status = 2"; //   2 => 'ประเมินเสร็จสิ้น รอซ่อม',
-            $sql_in_repair .= " WHERE inrep_id = $id";
-            $query_in = mysql_query($sql_in_repair) or die(mysql_error());
+            $sql_repair = "UPDATE repair SET ";
+            $sql_repair .= " inrep_status = 2"; //   2 => 'ประเมินเสร็จสิ้น รอซ่อม',
+            $sql_repair .= " WHERE inrep_id = $id";
+            $query_in = mysql_query($sql_repair) or die(mysql_error());
             if ($query_in) {
                 $sql_assign = "UPDATE repairers SET ";
                 $sql_assign .= " rep_estimate_status = $status,";
@@ -101,7 +101,7 @@ switch ($_GET['method']) {
         $repair_id = $_POST['repair_id'];
         $status = $_POST['status'];
         if (!empty($_POST)) {
-            $sql = "UPDATE in_repair SET";
+            $sql = "UPDATE repair SET";
             $sql .= " inrep_status = $status";
             $sql .= " WHERE inrep_id = $repair_id";
             $query = mysql_query($sql) or die(mysql_error());
@@ -120,7 +120,7 @@ switch ($_GET['method']) {
         $repair_status = $_POST['repair_status']; // 5 = เริ่มการซ่อม
         $repair_id = $_POST['repair_id'];
 
-        $sql = "UPDATE in_repair SET ";
+        $sql = "UPDATE repair SET ";
         $sql .= " inrep_status = $repair_status"; // 5
         $sql .= " WHERE inrep_id = $repair_id";
         $query = mysql_query($sql) or die(mysql_error() . 'sql ::==' . $sql);
@@ -144,7 +144,7 @@ switch ($_GET['method']) {
         $repair_status_remark = $_POST['repair_status_remark'];
         $repair_id = $_POST['repair_id'];
 
-        $sql = "UPDATE in_repair SET ";
+        $sql = "UPDATE repair SET ";
         $sql .= " inrep_status = $repair_status"; // 6 , 7 
         $sql .= " WHERE inrep_id = $repair_id";
         $query = mysql_query($sql) or die(mysql_error() . 'sql ::==' . $sql);
@@ -167,7 +167,7 @@ switch ($_GET['method']) {
         $repair_id = $_POST['repair_id'];
         $json_accessory = $_POST['accessory'];        
         if (!empty($_POST)) {
-            $sql = "UPDATE in_repair SET ";
+            $sql = "UPDATE repair SET ";
             $sql .= " inrep_status = 8,"; // 8 => 'รอรับของ'
             $sql .= " inrep_realdate = NOW()";
             $sql .= " WHERE inrep_id = $repair_id";
@@ -176,7 +176,7 @@ switch ($_GET['method']) {
                 // ##########  loop ############                                
                 $array_accessory = json_decode($json_accessory, true);                      
                 foreach ($array_accessory as $key => $data) {
-                    $sql = " UPDATE in_repair_accessory SET ";
+                    $sql = " UPDATE repair_accessory SET ";
                     $sql .= " inrepacc_check = " . $data['acc_check'];
                     $sql .= " WHERE inrepacc_id = " . $data['acc_id'];
                     $query = mysql_query($sql) or die(mysql_error());

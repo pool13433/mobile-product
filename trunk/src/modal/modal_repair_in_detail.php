@@ -23,7 +23,7 @@
                     <label class="col-lg-3" style="text-align: right">ปัญหา</label>
                     <div class="col-lg-9">
                         <?php
-                        $sql_problem = "SELECT * FROM in_repair_problem ir_p";
+                        $sql_problem = "SELECT * FROM repair_problem ir_p";
                         $sql_problem .= " LEFT JOIN problem p ON p.prob_id = ir_p.prob_id";
                         $sql_problem .= " WHERE ir_p.inrep_id = " . $data['inrep_id'];
                         $query_problem = mysql_query($sql_problem) or die(mysql_error());
