@@ -1,7 +1,7 @@
 <?php
 
 date_default_timezone_set('UTC');
-define("MAINPAGE", "login.php");
+define("MAINPAGE", "choice.php");
 
 // ########### ประกาศค่าคงที่ ##########
 define('EMPLOYEE_STATUS', 1);  // พนักงานร้าน
