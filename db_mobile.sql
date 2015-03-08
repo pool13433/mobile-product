@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2015 at 04:36 PM
+-- Generation Time: Mar 08, 2015 at 04:32 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -114,10 +114,12 @@ INSERT INTO `color` (`col_id`, `col_nameth`, `col_nameeng`, `col_createdate`, `c
 
 CREATE TABLE IF NOT EXISTS `in_repair` (
   `inrep_id` int(11) NOT NULL AUTO_INCREMENT,
+  `inrep_status` int(2) NOT NULL COMMENT ' 1 => ''รอประเมิน'',   2 => ''ประเมินเสร็จสิ้น รอ อนุมัตจากเจ้าของเครื่อง'',         3 => ''อนุมัติการซ่อม จากลูกค้าเรียบร้อยแล้ว'',         4 => ''ยกเลิก/ไม่อนุมัติการซ่อม จากลูกค้า'',         5 => ''ซ่อม'',         6 => ''ซ่อมเสร็จแล้ว'',         7 => ''เกิดปัญหา'',         8 => '' รับของเสร็จสิ้น จบการซ่อม''',
   `inrep_code` varchar(20) NOT NULL,
-  `per_idcard` varchar(15) NOT NULL,
-  `inrep_createdate` date NOT NULL,
-  `inrep_getdate` date NOT NULL,
+  `per_id` int(11) NOT NULL,
+  `inrep_createdate` date NOT NULL COMMENT 'วันมาซ่อม',
+  `inrep_getdate` date NOT NULL COMMENT 'วันมารับของที่นัด',
+  `inrep_realdate` date NOT NULL COMMENT 'วันมารับ จริง',
   `bra_id` int(11) NOT NULL,
   `mod_id` int(11) NOT NULL,
   `inrep_emi` varchar(50) NOT NULL COMMENT 'เลขเครื่อง',
@@ -128,20 +130,23 @@ CREATE TABLE IF NOT EXISTS `in_repair` (
   `inrep_createby` int(11) NOT NULL,
   `inrep_updatedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `inrep_updateby` int(11) NOT NULL,
-  `inrep_status` int(2) NOT NULL COMMENT 'สถานะซ่อม ',
   PRIMARY KEY (`inrep_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `in_repair`
 --
 
-INSERT INTO `in_repair` (`inrep_id`, `inrep_code`, `per_idcard`, `inrep_createdate`, `inrep_getdate`, `bra_id`, `mod_id`, `inrep_emi`, `col_id`, `inrep_remark`, `inrep_accessory_other`, `inrep_problem_other`, `inrep_createby`, `inrep_updatedate`, `inrep_updateby`, `inrep_status`) VALUES
-(6, 'RP00002', '1219800120650', '2015-01-20', '2015-01-20', 2, 5, '12sdsdsdsdsd', 9, '$repair_id', 'ระยอง', 'ระยอง', 1, '2015-01-23 15:12:02', 1, 1),
-(7, 'RP00007', '1219800120650', '2015-01-22', '2015-01-22', 2, 4, '0878356866', 9, '0878356866', '', '0878356866', 1, '2015-01-23 15:12:35', 1, 1),
-(8, 'RP00008', '1219800120650', '2015-01-23', '2015-01-23', 1, 1, '10000', 9, 'คุณ พูลสวัสดิ์', '', '', 1, '2015-01-23 15:41:06', 1, 1),
-(9, 'RP00008', '1219800120650', '2015-01-23', '2015-01-23', 1, 1, '10000', 9, 'คุณ พูลสวัสดิ์', '', '', 1, '2015-01-23 15:41:16', 1, 1),
-(10, 'RP00010', '1219800120633', '2015-01-23', '2015-01-23', 5, 6, '12sdsdsdsdsd', 8, 'ฐนัตตา', '', 'ฐนัตตา', 1, '2015-01-23 15:43:11', 1, 0);
+INSERT INTO `in_repair` (`inrep_id`, `inrep_status`, `inrep_code`, `per_id`, `inrep_createdate`, `inrep_getdate`, `inrep_realdate`, `bra_id`, `mod_id`, `inrep_emi`, `col_id`, `inrep_remark`, `inrep_accessory_other`, `inrep_problem_other`, `inrep_createby`, `inrep_updatedate`, `inrep_updateby`) VALUES
+(6, 4, 'RP00002', 4, '2015-02-14', '2015-02-14', '0000-00-00', 2, 5, '12sdsdsdsdsd', 9, '$repair_id', 'ระยอง', 'ระยอง', 1, '2015-02-14 14:26:44', 1),
+(7, 2, 'RP00007', 1, '2015-02-14', '2015-02-14', '0000-00-00', 2, 4, '0878356866', 9, '0878356866', '', '0878356866', 1, '2015-02-14 13:01:28', 1),
+(8, 2, 'RP00008', 1, '2015-02-14', '2015-02-14', '0000-00-00', 1, 1, '10000', 9, 'คุณ พูลสวัสดิ์', '', '', 1, '2015-02-14 14:25:01', 1),
+(9, 1, 'RP00008', 12, '2015-02-14', '2015-02-14', '0000-00-00', 1, 1, '10000', 9, 'คุณ พูลสวัสดิ์', '', '', 1, '2015-02-14 14:40:39', 1),
+(10, 8, 'RP00010', 11, '2015-02-14', '2015-02-14', '2015-02-15', 5, 6, '12sdsdsdsdsd', 8, 'ฐนัตตา', '', 'ฐนัตตา', 1, '2015-02-14 14:40:48', 1),
+(11, 0, 'RP00011', 15, '2015-02-21', '2015-02-21', '2015-02-21', 1, 1, '12sdsdsdsdsd', 1, 'เครื่องเปิดไม่ติด\r\nสายชาร์ด ขาด\r\nลำโพงไม่ทำงาน\r\nสัญญาณไม่ดี', '', '121212', 1, '2015-02-21 14:22:19', 1),
+(12, 2, 'RP00012', 13, '2015-02-14', '2015-02-14', '0000-00-00', 1, 1, '111111', 4, '11111', '', '', 1, '2015-02-14 13:09:17', 1),
+(13, 0, 'RP00012', 2, '2015-02-14', '2015-02-14', '0000-00-00', 1, 1, '111111', 4, '11111', '', '', 1, '2015-02-14 12:57:54', 1),
+(14, 1, 'RP00014', 1, '2015-02-14', '2015-02-14', '0000-00-00', 3, 3, '111111', 9, 'ssdsdsd', '', '', 1, '2015-02-14 13:01:00', 1);
 
 -- --------------------------------------------------------
 
@@ -151,35 +156,46 @@ INSERT INTO `in_repair` (`inrep_id`, `inrep_code`, `per_idcard`, `inrep_createda
 
 CREATE TABLE IF NOT EXISTS `in_repair_accessory` (
   `inrepacc_id` int(11) NOT NULL AUTO_INCREMENT,
+  `inrepacc_check` int(1) NOT NULL DEFAULT '0' COMMENT '0 = ไม่ได้คืน ,1 = คืนครบ',
   `acc_id` int(11) NOT NULL,
   `inrep_id` int(11) NOT NULL,
   PRIMARY KEY (`inrepacc_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=92 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=140 ;
 
 --
 -- Dumping data for table `in_repair_accessory`
 --
 
-INSERT INTO `in_repair_accessory` (`inrepacc_id`, `acc_id`, `inrep_id`) VALUES
-(67, 1, 6),
-(68, 2, 6),
-(69, 3, 6),
-(70, 4, 6),
-(71, 5, 6),
-(72, 6, 6),
-(73, 0, 6),
-(74, 1, 7),
-(75, 2, 7),
-(76, 3, 7),
-(77, 4, 7),
-(78, 5, 7),
-(83, 1, 8),
-(84, 2, 8),
-(87, 1, 9),
-(88, 2, 9),
-(89, 1, 10),
-(90, 2, 10),
-(91, 3, 10);
+INSERT INTO `in_repair_accessory` (`inrepacc_id`, `inrepacc_check`, `acc_id`, `inrep_id`) VALUES
+(99, 0, 1, 14),
+(100, 0, 2, 14),
+(101, 0, 3, 14),
+(102, 0, 1, 13),
+(103, 0, 3, 13),
+(104, 0, 1, 6),
+(105, 0, 2, 6),
+(106, 0, 3, 6),
+(107, 0, 4, 6),
+(108, 0, 5, 6),
+(109, 0, 6, 6),
+(110, 0, 0, 6),
+(111, 0, 1, 7),
+(112, 0, 2, 7),
+(113, 0, 3, 7),
+(114, 0, 4, 7),
+(115, 0, 5, 7),
+(116, 0, 1, 8),
+(117, 0, 2, 8),
+(118, 1, 1, 10),
+(119, 1, 2, 10),
+(120, 0, 3, 10),
+(121, 0, 1, 9),
+(122, 0, 2, 9),
+(123, 0, 1, 12),
+(124, 0, 3, 12),
+(137, 0, 1, 11),
+(138, 0, 2, 11),
+(139, 0, 3, 11);
 
 -- --------------------------------------------------------
 
@@ -192,24 +208,30 @@ CREATE TABLE IF NOT EXISTS `in_repair_problem` (
   `prob_id` int(11) NOT NULL,
   `inrep_id` int(11) NOT NULL,
   PRIMARY KEY (`inrepprob_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=69 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=95 ;
 
 --
 -- Dumping data for table `in_repair_problem`
 --
 
 INSERT INTO `in_repair_problem` (`inrepprob_id`, `prob_id`, `inrep_id`) VALUES
-(53, 1, 6),
-(54, 2, 6),
-(55, 3, 6),
-(56, 4, 6),
-(57, 0, 6),
-(58, 1, 7),
-(62, 1, 8),
-(65, 1, 9),
-(66, 2, 9),
-(67, 2, 10),
-(68, 3, 10);
+(74, 2, 14),
+(75, 1, 13),
+(76, 2, 13),
+(77, 1, 6),
+(78, 2, 6),
+(79, 3, 6),
+(80, 4, 6),
+(81, 0, 6),
+(82, 1, 7),
+(83, 1, 8),
+(84, 2, 10),
+(85, 3, 10),
+(86, 1, 9),
+(87, 2, 9),
+(88, 1, 12),
+(89, 2, 12),
+(94, 2, 11);
 
 -- --------------------------------------------------------
 
@@ -262,25 +284,31 @@ CREATE TABLE IF NOT EXISTS `person` (
   `per_createby` int(11) NOT NULL,
   `per_updatedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `per_updateby` int(11) NOT NULL,
+  `pre_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`per_id`),
   UNIQUE KEY `per_idcard` (`per_idcard`),
   KEY `per_idcard_2` (`per_idcard`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `person`
 --
 
-INSERT INTO `person` (`per_id`, `per_status`, `per_fname`, `per_lname`, `per_username`, `per_password`, `per_idcard`, `per_address`, `per_mobile`, `per_email`, `per_createdate`, `per_createby`, `per_updatedate`, `per_updateby`) VALUES
-(1, 3, 'admin', 'admin', 'admin', '1234', '1219800120650', 'ระยอง', '1234567890', '', '2015-01-21 13:44:36', 0, '2015-01-21 14:12:46', 1),
-(2, 3, 'user', 'user', 'user', '1234', '1234567890123', 'ระยอง', '1234567890', 'user@gmail.com', '2015-01-21 13:44:36', 0, '2015-01-21 14:13:04', 1),
-(4, 4, 'คุณ พูลสวัสดิ์ อิอิ', 'คุณ พูลสวัสดิ์', 'poolsawat', 'poolsawat', '1219800120653', 'กทม', '1234567890', '', '2015-01-21 13:44:36', 0, '2015-01-21 14:14:35', 1),
-(5, 2, 'pool13433', 'pool13433', 'pool13433', '1234', '1234567891011', 'เชียงไหม่', '0878356866', 'rayong@gmail.com', '2015-01-21 14:01:32', 1, '2015-01-21 14:01:32', 1),
-(6, 1, 'ลูกค้า VIP', 'ลูกค้า VIP', 'customer', 'customer', '1234567890124', 'ภูเก็ต', '1234567890', 'customer@gmail.ocm', '2015-01-21 14:16:02', 1, '2015-01-21 14:31:53', 1),
-(7, 2, 'คุณ พูลสวัสดิ์ อิอิ', 'คุณ พูลสวัสดิ์', 'pool13433', '1234', '1219800120654', 'บุรีรัม', '1234567890', '', '2015-01-21 16:13:18', 1, '2015-01-21 16:13:18', 1),
-(8, 2, 'ช่างพูล', 'ช่างพูล', 'pool1234', '1234', '1234567890120', 'ยะลา', '1234567890', 'pool1234@gmail.com', '2015-01-23 15:11:36', 1, '2015-01-23 15:11:36', 1),
-(9, 0, 'ฐนัตตา', 'ฐนัตตา', '', '', '1219800120633', 'ฐนัตตา', '', '', '2015-01-23 15:43:11', 0, '2015-01-23 15:43:11', 0),
-(10, 1, '1234', '1234', 'user', '1234', '1234123412341', '1234', '1234123411', '1234@gmail.com', '2015-01-29 06:08:39', 0, '2015-01-29 06:08:39', 0);
+INSERT INTO `person` (`per_id`, `per_status`, `per_fname`, `per_lname`, `per_username`, `per_password`, `per_idcard`, `per_address`, `per_mobile`, `per_email`, `per_createdate`, `per_createby`, `per_updatedate`, `per_updateby`, `pre_id`) VALUES
+(1, 3, 'admin', 'admin', 'admin', '1234', '1219800120650', 'ระยอง', '1234567890', 'poon_mp@hotmail.com', '2015-01-21 13:44:36', 0, '2015-02-15 09:03:03', 1, NULL),
+(2, 3, 'user', 'user', 'user', '1234', '1234567890123', 'ระยอง', '1234567890', '', '2015-01-21 13:44:36', 0, '2015-01-21 14:13:04', 1, NULL),
+(4, 4, 'คุณ พูลสวัสดิ์', 'คุณ 11111111', 'customer', '1234', '1219800120653', 'ระยอง', '1234567890', 'poon@gmail.com', '2015-01-21 13:44:36', 0, '2015-02-14 17:16:45', 4, NULL),
+(5, 2, 'pool13433', 'pool13433', 'pool13433', '1234', '1234567891011', 'เชียงไหม่', '0878356866', 'rayong@gmail.com', '2015-01-21 14:01:32', 1, '2015-01-21 14:01:32', 1, NULL),
+(6, 4, 'ลูกค้า VIP', 'ลูกค้า VIP', 'customer', 'customer', '1234567890124', 'ภูเก็ต', '1234567890', 'customer@gmail.ocm', '2015-01-21 14:16:02', 1, '2015-02-16 16:05:50', 6, NULL),
+(7, 2, 'คุณ พูลสวัสดิ์ อิอิ', 'คุณ พูลสวัสดิ์', 'employee', '1234', '1219800120654', 'บุรีรัม', '1234567890', 'poon@gmail.com', '2015-01-21 16:13:18', 1, '2015-01-21 16:13:18', 1, NULL),
+(8, 2, 'ช่างพูล', 'ช่างพูล', 'pool1234', '1234', '1234567890120', 'ยะลา', '1234567890', 'pool1234@gmail.com', '2015-01-23 15:11:36', 1, '2015-01-23 15:11:36', 1, NULL),
+(9, 4, 'ฐนัตตา', 'ฐนัตตา', 'thanatta', 'thanatta', '1219800120633', 'ฐนัตตา', '0801166617', 'thanatta@gmail.com', '2015-01-23 15:43:11', 0, '2015-02-16 12:09:02', 1, NULL),
+(10, 1, '1234', '1234', 'user', '1234', '1234123412341', '1234', '1234123411', '1234@gmail.com', '2015-01-29 06:08:39', 0, '2015-01-29 06:08:39', 0, NULL),
+(11, 4, 'คุณ facebook', 'คุณ facebook', '9999', '9999', '9999999999999', '9999999999999', '0878356866', '9999@gmail.com', '2015-02-14 12:59:05', 0, '2015-02-15 12:08:50', 1, NULL),
+(12, 4, 'คุณลูกค้าชั้นดี', 'คุณลูกค้าชั้นดี', '8888', '8888', '8888888888888', '8888888888888', '1234567890', '8888@gmail.com', '2015-02-14 12:59:33', 0, '2015-02-15 12:07:47', 1, NULL),
+(13, 4, '7777777777777', '7777777777777', '7777', '7777', '7777777777777', '7777777777777', '', '', '2015-02-14 12:59:50', 0, '2015-02-14 12:59:50', 0, NULL),
+(14, 4, '5555555555555', '5555555555555', '5555', '5555', '5555555555555', '5555555555555', '5555555555555', '5555@gmail.com', '2015-02-14 13:00:13', 0, '2015-02-16 12:09:23', 1, NULL),
+(15, 4, 'คุณ นิสัยดี', 'คุณ นิสัยดี', '4444', '4444', '4444444444444', '4444444444444', '1234567890', '', '2015-02-14 13:00:29', 0, '2015-02-15 12:06:08', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -296,7 +324,17 @@ CREATE TABLE IF NOT EXISTS `prefix` (
   `pre_updatedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `pre_updateby` int(11) NOT NULL,
   PRIMARY KEY (`pre_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `prefix`
+--
+
+INSERT INTO `prefix` (`pre_id`, `pre_name`, `pre_createdate`, `pre_createby`, `pre_updatedate`, `pre_updateby`) VALUES
+(1, 'นาย', '2015-02-15 15:40:23', 1, '2015-02-15 15:40:23', 1),
+(2, 'นาง', '2015-02-15 15:40:23', 1, '2015-02-15 15:40:34', 1),
+(4, 'นางสาว', '2015-02-15 15:41:17', 1, '2015-02-15 15:41:17', 1),
+(5, 'ดร.', '2015-02-15 15:41:25', 1, '2015-02-15 15:41:25', 1);
 
 -- --------------------------------------------------------
 
@@ -313,7 +351,7 @@ CREATE TABLE IF NOT EXISTS `problem` (
   `prob_updatedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `prob_updateby` int(11) NOT NULL,
   PRIMARY KEY (`prob_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `problem`
@@ -327,7 +365,10 @@ INSERT INTO `problem` (`prob_id`, `prob_name`, `prob_desc`, `prob_createdate`, `
 (5, 'จอแตก', 'จอแตก', '2015-01-09 06:06:09', 1, '2015-01-09 06:06:09', 1),
 (6, 'ปุ่มหลุด', 'ปุ่มหลุด', '2015-01-09 06:06:20', 1, '2015-01-09 06:06:20', 1),
 (7, 'แบตบวม', 'แบตบวม', '2015-01-09 06:06:33', 1, '2015-01-09 06:06:33', 1),
-(8, 'จอฟ้า', 'จอฟ้า', '2015-01-09 06:06:41', 1, '2015-01-09 06:06:41', 1);
+(8, 'จอฟ้า', 'จอฟ้า', '2015-01-09 06:06:41', 1, '2015-01-09 06:06:41', 1),
+(9, 'ลำโพง เสียงไม่ดัง', 'ลำโพง เสียงไม่ดัง', '2015-02-18 06:02:33', 1, '2015-02-18 06:02:33', 1),
+(10, 'ไมค์ พุดไม่ดัง', 'ไมค์ พุดไม่ดัง', '2015-02-18 06:02:53', 1, '2015-02-18 06:02:53', 1),
+(11, 'เปิดใช้งาน app ในเครื่องไม่ได้', 'เปิดใช้งาน app ในเครื่องไม่ได้', '2015-02-18 06:03:30', 1, '2015-02-18 06:03:30', 1);
 
 -- --------------------------------------------------------
 
@@ -360,16 +401,16 @@ INSERT INTO `product` (`prod_id`, `prod_name`, `prod_desc`, `col_id`, `mod_id`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `repair_assign`
+-- Table structure for table `repairers`
 --
 
-CREATE TABLE IF NOT EXISTS `repair_assign` (
+CREATE TABLE IF NOT EXISTS `repairers` (
   `rep_id` int(11) NOT NULL COMMENT 'รหัสใบซ่อม',
   `rep_repairers` int(11) NOT NULL COMMENT 'รหัสผนักงาน',
   `rep_suppose_startdate` date NOT NULL COMMENT 'วันเริ่มซ่อมแบบประมาณการ',
   `rep_suppose_enddate` date NOT NULL COMMENT 'วันสิ้นสุดซ่อมแบบประมาณการ',
   `rep_estimate_date` date NOT NULL,
-  `rep_estimate_status` int(2) NOT NULL DEFAULT '1' COMMENT 'สถานะประเมิน 1 = รอประเมิน,2 = ประเมินแล้ว',
+  `rep_estimate_status` int(2) NOT NULL DEFAULT '0' COMMENT 'สถานะประเมิน 1 = รับซ่อม ,2 = ไม่รับซ่อม เพราะ ไม่สามารถซ่อมได้',
   `rep_estimate_remark` text NOT NULL,
   `rep_estimate_price` int(11) NOT NULL DEFAULT '0',
   `rep_actual_startdate` date NOT NULL COMMENT 'เริ่มซ่อมจริง',
@@ -379,14 +420,18 @@ CREATE TABLE IF NOT EXISTS `repair_assign` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `repair_assign`
+-- Dumping data for table `repairers`
 --
 
-INSERT INTO `repair_assign` (`rep_id`, `rep_repairers`, `rep_suppose_startdate`, `rep_suppose_enddate`, `rep_estimate_date`, `rep_estimate_status`, `rep_estimate_remark`, `rep_estimate_price`, `rep_actual_startdate`, `rep_actual_enddate`, `rep_status_remark`) VALUES
-(6, 8, '2015-01-23', '2015-01-23', '2015-01-22', 0, '', 0, '2015-01-22', '2015-01-27', ''),
-(7, 8, '2015-01-23', '2015-01-23', '2015-01-22', 1, '', 0, '2015-01-22', '2015-01-22', ''),
-(8, 5, '2015-01-23', '2015-01-23', '2015-01-23', 1, '', 0, '2015-01-23', '2015-01-23', ''),
-(9, 8, '2015-01-23', '2015-01-23', '2015-01-23', 1, '', 0, '2015-01-23', '2015-01-23', '');
+INSERT INTO `repairers` (`rep_id`, `rep_repairers`, `rep_suppose_startdate`, `rep_suppose_enddate`, `rep_estimate_date`, `rep_estimate_status`, `rep_estimate_remark`, `rep_estimate_price`, `rep_actual_startdate`, `rep_actual_enddate`, `rep_status_remark`) VALUES
+(6, 8, '2015-02-15', '2015-02-14', '2015-02-14', 0, '1111111', 111, '2015-01-22', '2015-01-27', ''),
+(7, 8, '2015-02-14', '2015-02-14', '2015-02-14', 0, '90000', 90000, '2015-01-22', '2015-01-22', ''),
+(8, 5, '2015-02-14', '2015-02-14', '2015-02-15', 1, '19999', 19999, '2015-01-23', '2015-01-23', ''),
+(9, 8, '2015-02-14', '2015-02-14', '2015-01-23', 0, '', 0, '2015-01-23', '2015-01-23', ''),
+(10, 7, '2015-02-12', '2015-02-14', '2015-02-15', 1, '1111', 111111, '2015-02-15', '2015-02-15', 'เครื่องเก่าเกินซ่อม'),
+(11, 8, '2015-02-28', '2015-02-28', '2015-02-14', 0, '', 0, '2015-02-14', '2015-02-14', ''),
+(12, 5, '2015-02-14', '2015-02-14', '2015-02-15', 1, '111111', 1111111, '2015-02-14', '2015-02-14', ''),
+(14, 5, '2015-02-14', '2015-02-14', '2015-02-14', 0, '', 0, '2015-02-14', '2015-02-14', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
