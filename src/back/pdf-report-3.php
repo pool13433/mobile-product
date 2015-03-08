@@ -5,7 +5,7 @@ include '../config/connection.php';
 
 $sql = " SELECT prob_name,count(*) count_problem";
 $sql .= " FROM problem p";
-$sql .= " LEFT JOIN in_repair_problem ir_p ON ir_p.prob_id = p.prob_id";
+$sql .= " LEFT JOIN repair_problem ir_p ON ir_p.prob_id = p.prob_id";
 $sql .= " GROUP BY prob_name";
 $sql .= " ORDER BY count(*) DESC";
 

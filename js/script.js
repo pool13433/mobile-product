@@ -167,27 +167,19 @@ function print_properties_in_object(object) {
     }
     return output;
 }
-function login() {
-    var username = $('#input-username').val();
-    var password = $('#input-password').val();
+function login(formid) {
     $.ajax({
         url: './action/person.php?method=login',
-        data: {
-            username: username,
-            password: password
-        },
+        data: $('#' + formid).serialize(),
         type: 'post',
         dataType: 'json',
         success: function(data) {
-            if (data.status == 'success') {
+            showNotification(data.status, data.title, data.msg, 3);
+            if (data.status) {
                 var cookie = $('#cookie').val();
-                setCookie('username', username, 365);
-                setCookie('password', password, 365);
-
-                showNotification('success', data.title, data.msg, 3);
+                setCookie('username', $('#username').val(), 365);
+                setCookie('password', $('#password').val(), 365);
                 redirectDelay(data.url, 2);
-            } else {
-                showNotification('danger', data.title, data.msg, 3);
             }
         }
     });

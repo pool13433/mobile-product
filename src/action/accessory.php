@@ -52,7 +52,7 @@ switch ($_GET['method']) {
         $repair_id = $_POST['repair_id'];
         if (!empty($_POST)) {
             $list = [];
-            $sql = "SELECT * FROM in_repair_accessory ir_a";
+            $sql = "SELECT * FROM repair_accessory ir_a";
             $sql .= " LEFT JOIN accessory a ON a.acc_id = ir_a.acc_id";
             $sql .= " WHERE ir_a.inrep_id = $repair_id";
             $query = mysql_query($sql) or die(mysql_error());

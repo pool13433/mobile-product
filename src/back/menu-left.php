@@ -27,9 +27,11 @@
             <li><a href="index.php?page=list-repair_finish"><i class="glyphicon glyphicon-ok-circle"></i> รายการ ซ่อมเสร็จสิ้น</a></li>
         <?php } ?>
     </ul>
-    <ul class="nav nav-sidebar">
-        <li><a href="index.php?page=report-1"><i class="glyphicon glyphicon-book"></i> รายงานยอดซ่อม</a></li>
-        <li><a href="index.php?page=report-2"><i class="glyphicon glyphicon-book"></i> รายงานการซ่อมตามช่าง</a></li>
-        <li><a href="index.php?page=report-3"><i class="glyphicon glyphicon-book"></i> รายงานปัญหาที่พบในการซ่อม</a></li>
-    </ul>
+    <?php if ($_SESSION['person']['per_status'] == REPAIRMAN_STATUS) { ?>         
+        <ul class="nav nav-sidebar">
+            <li><a href="index.php?page=report-1"><i class="glyphicon glyphicon-book"></i> รายงานยอดซ่อม</a></li>
+            <li><a href="index.php?page=report-2"><i class="glyphicon glyphicon-book"></i> รายงานการซ่อมตามช่าง</a></li>
+            <li><a href="index.php?page=report-3"><i class="glyphicon glyphicon-book"></i> รายงานปัญหาที่พบในการซ่อม</a></li>
+        </ul>
+    <?php } ?>
 </div>

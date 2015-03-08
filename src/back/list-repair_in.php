@@ -27,12 +27,12 @@
                 <tbody>
                     <?php
                     include '../config/connection.php';
-                    $sql_in_repair = "SELECT * FROM in_repair b";
-                    $sql_in_repair .= " JOIN person p ON p.per_id = b.inrep_updateby";
-                    $sql_in_repair .= " ORDER BY b.inrep_id";
-                    $query_in_repair = mysql_query($sql_in_repair) or die(mysql_error());
+                    $sql_repair = "SELECT * FROM repair b";
+                    $sql_repair .= " JOIN person p ON p.per_id = b.inrep_updateby";
+                    $sql_repair .= " ORDER BY b.inrep_id";
+                    $query_repair = mysql_query($sql_repair) or die(mysql_error());
                     $row = 1;
-                    while ($data = mysql_fetch_array($query_in_repair)):
+                    while ($data = mysql_fetch_array($query_repair)):
                         ?>
                         <tr>
                             <td><?= $row ?></td>
@@ -47,7 +47,7 @@
                                 </a>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger" onclick="delete_data(<?= $data['inrep_id'] ?>, '../action/in_repair.php?method=delete')">
+                                <button type="button" class="btn btn-danger" onclick="delete_data(<?= $data['inrep_id'] ?>, '../action/repair.php?method=delete')">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                             </td>
