@@ -35,7 +35,7 @@ switch ($_GET['method']) {
                     break;
             }
             echo returnJson('success', 'information', 'เข้าระบบ สำเร็จ', $url);
-        } else {            
+        } else {
             echo returnJson('fail', 'error', 'ไม่พบข้อมูลในระบบ sql :' . $sql, '');
         }
         break;
@@ -133,11 +133,11 @@ switch ($_GET['method']) {
             $email = $_POST['input-email'];
             $status = (empty($_POST['combo-status']) ? CUSTOMER_STATUS : $_POST['combo-status']);
             $cmd = (empty($_POST['cmd']) ? '' : $_POST['cmd']);
-            
-            if(empty($ses_id)){
+
+            if (empty($ses_id)) {
                 $ses_id = $id;
             }
-            
+
             if (empty($_POST['input-id'])) { // NEW 
                 $sql = " INSERT INTO `person`(";
                 $sql .= " `per_fname`, `per_lname`,";
@@ -160,8 +160,12 @@ switch ($_GET['method']) {
             } else { // UPDATE                               
                 $sql = " UPDATE `person` SET";
                 $sql .= " `per_fname`='$fname',";
-                $sql .= " `per_lname`='$lname',`per_username`='$username',";
-                $sql .= " `per_password`='$password',`per_idcard`='$idcard',";
+                $sql .= " `per_lname`='$lname',";
+                if (!empty($username) && !empty($password)) {
+                    $sql .= " `per_username`='$username',";
+                    $sql .= " `per_password`='$password',";
+                }
+                $sql .= " `per_idcard`='$idcard',";
                 $sql .= " `per_address`='$address',`per_mobile`='$mobile',";
                 $sql .= " `per_email`='$email',";
                 $sql .= " `per_updatedate`=NOW(),`per_updateby`=$ses_id,";

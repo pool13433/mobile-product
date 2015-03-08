@@ -86,8 +86,8 @@ if (!empty($_GET['mobile'])) {
                                 <label for="input-mobile" class="col-sm-4 control-label">โทรศัพท์</label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control validate[required,custom[phone],minSize[10]]" 
-                                           data-errormessage-value-missing="กรุณากรอก โทรศัพท์" readonly
-                                           data-errormessage-range-underflow="กรุณากรอก โทรศัพท์ 10 ตัวอักษรขึ้นไป"
+                                           data-errormessage-value-missing="กรุณากรอก โทรศัพท์" maxlength="10"
+                                           data-errormessage-range-underflow="กรุณากรอก โทรศัพท์ 10 ตัว"
                                            data-errormessage-custom-error="กรุณากรอก โทรศัพท์ ให้ถูกต้อง"
                                            name="input-mobile" id="input-mobile" value="<?= $person['per_mobile'] ?>"/>
                                 </div>
